@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EjemploRecyclerView</string>
+    <string name="alarma">Alarma</string>
 </resources>

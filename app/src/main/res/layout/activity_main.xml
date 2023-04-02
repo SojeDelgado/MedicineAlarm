@@ -10,16 +10,15 @@
         android:id="@+id/alarmaLayout"
         android:layout_width="416dp"
         android:layout_height="278dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        >
 
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Alarma"
+            android:layout_marginStart="5dp"
+            android:text="@string/alarma"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -32,18 +31,32 @@
             android:id="@+id/text_clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="60dp"
+            android:format12Hour="hh:mm:ss"
+            android:format24Hour="hh:mm:ss"
             android:textColor="#000000"
-            android:format12Hour="hh:mm:ss a"
-            android:format24Hour="hh:mm:ss a"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintHorizontal_bias="0.5"
 
-            />
+            android:textSize="42sp"
+            android:typeface="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12:00:00" />
+
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="2dp"
+            android:format12Hour="a"
+            android:format24Hour="a"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/text_clock"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.539" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
