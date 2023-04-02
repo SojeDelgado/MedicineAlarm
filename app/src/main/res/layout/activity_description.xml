@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DescriptionActivity">
+
+    <Button
+        android:id="@+id/buttonBack"
+        android:onClick="back"
+        android:layout_width="53dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:backgroundTint="@color/black"
+        android:gravity="center_vertical|center_horizontal"
+        app:cornerRadius="15dp"
+        app:icon="?attr/actionModeCloseDrawable"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
+
+    <TextView
+        android:id="@+id/titleDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonBack"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Description"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/nombreDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleDescriptionTextView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Nombre"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/medicamentoDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombreDescriptionTextView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Medicamento"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/horaDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nombreDescriptionTextView"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="25dp"
+
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@id/medicamentoDescriptionTextView"
+        android:text="12:00 p.m."
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/modificarNombreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Modificar nombre"
+        android:layout_below="@id/medicamentoDescriptionTextView"/>
+
+</RelativeLayout>
