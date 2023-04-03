@@ -72,16 +72,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, EDITAR_ELEMENTO_REQUEST);
     }
 
-    /*public void init() {
-        elements = new ArrayList<>();
-        listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(ListElement item) {
-                moveToDescription(item);
-            }
-        });
-    }*/
-
     //Método para recibir el resultado de la actividad "AgregarElementoActivity".
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

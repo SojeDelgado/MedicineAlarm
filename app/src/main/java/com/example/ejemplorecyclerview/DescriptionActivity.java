@@ -9,13 +9,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class DescriptionActivity extends AppCompatActivity {
     EditText nombreEditText;
-    TextView tipoEditText;
+    Spinner tipoMedicamentoSpinner;
     TextView horaEditText;
 
     private ListElement element; // variable para almacenar el elemento actual
@@ -29,23 +33,36 @@ public class DescriptionActivity extends AppCompatActivity {
         // obtener el elemento de la actividad anterior
         element = (ListElement) getIntent().getSerializableExtra("ListElement");
 
+        String[] tipoMedicamentos = {
+                "Analgesicos",
+                "Antibioticos",
+                "Antidepresivos",
+                "Antihistamínicos",
+                "Antinflamatorios"
+        };
 
         nombreEditText = findViewById(R.id.nombreDescriptionTextView);
-        tipoEditText = findViewById(R.id.medicamentoDescriptionTextView);
+        tipoMedicamentoSpinner = findViewById(R.id.spinnerTipoMedicamento);
         horaEditText = findViewById(R.id.horaDescriptionTextView);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoMedicamentos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tipoMedicamentoSpinner.setAdapter(adapter);
+
         nombreEditText.setText(element.getNombre());
-        tipoEditText.setText(element.getMedicamento());
         horaEditText.setText(element.getHora());
 
-        Button btnAceptar = findViewById(R.id.btnAgregar);
+        //Seleccionar el valor actual del elemento en el spinner
+        int spinnerPosition = adapter.getPosition(element.getMedicamento());
+        tipoMedicamentoSpinner.setSelection(spinnerPosition);
 
+        Button btnAceptar = findViewById(R.id.btnAgregar);
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Obtener los datos ingresados de los EditText
                 String nombre = nombreEditText.getText().toString();
-                String tipo = tipoEditText.getText().toString();
+                String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
                 String hora = horaEditText.getText().toString();
 
                 //Actualizar los valores del objeto ListElement
@@ -62,6 +79,10 @@ public class DescriptionActivity extends AppCompatActivity {
 
     }
     public void back(View v){
+        finish();
+    }
+
+    public void cancel(View view) {
         finish();
     }
 }

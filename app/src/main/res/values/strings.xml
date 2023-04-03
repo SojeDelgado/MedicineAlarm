@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">EjemploRecyclerView</string>
     <string name="alarma">Alarma</string>
+    <string name="tipo">Tipo</string>
 </resources>
