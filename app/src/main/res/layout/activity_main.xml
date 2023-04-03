@@ -8,57 +8,55 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/alarmaLayout"
-        android:layout_width="416dp"
-        android:layout_height="278dp"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.016"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="5dp"
             android:text="@string/alarma"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="16dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/textClock"
+        android:layout_width="match_parent"
+        android:layout_height="181dp"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toTopOf="@+id/listRecycleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alarmaLayout">
 
         <TextClock
-            android:id="@+id/text_clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:format12Hour="hh:mm:ss"
             android:format24Hour="hh:mm:ss"
-            android:textColor="#000000"
-
-            android:textSize="42sp"
-            android:typeface="normal"
+            android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="12:00:00" />
-
-        <TextClock
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginLeft="2dp"
-            android:format12Hour="a"
-            android:format24Hour="a"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/text_clock"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.539" />
-
-
+            android:textSize="45dp"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -72,7 +70,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alarmaLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textClock"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/inner_constraint_layout"
@@ -86,14 +85,19 @@
             android:id="@+id/btnAgregar"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:text="+"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
             android:background="@drawable/btn_redondo"
+            android:text="+"
+            android:textAlignment="center"
+            android:textColorHighlight="#151414"
+            android:textColorLink="#222020"
+            android:textSize="24sp"
+            app:iconTint="#FFFCFC"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

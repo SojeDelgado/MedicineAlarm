@@ -60,6 +60,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             medicamento = itemView.findViewById(R.id.medicamentoTextView);
             hora = itemView.findViewById(R.id.horaTextView);
             onOff = itemView.findViewById(R.id.onOffSwitch);
+
         }
 
         void bindData(final ListElement item){

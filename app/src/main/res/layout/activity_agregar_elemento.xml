@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextHora"
         android:layout_centerHorizontal="true"
-        android:text="Agregar" />
+        android:text="Agregar"
+        app:iconTint="#302E2E" />
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -13,11 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class DescriptionActivity extends AppCompatActivity {
-
-    TextView titleDescriptionTextView;
-    TextView nombreDescriptionTextView;
-    TextView medicamentoDescriptionTextView;
-    TextView horaDescriptionTextView;
+    EditText nombreEditText;
+    TextView tipoEditText;
+    TextView horaEditText;
 
     private ListElement element; // variable para almacenar el elemento actual
 
@@ -30,58 +29,39 @@ public class DescriptionActivity extends AppCompatActivity {
         // obtener el elemento de la actividad anterior
         element = (ListElement) getIntent().getSerializableExtra("ListElement");
 
-        titleDescriptionTextView = findViewById(R.id.titleDescriptionTextView);
-        nombreDescriptionTextView = findViewById(R.id.nombreDescriptionTextView);
-        medicamentoDescriptionTextView = findViewById(R.id.medicamentoDescriptionTextView);
-        horaDescriptionTextView = findViewById(R.id.horaDescriptionTextView);
 
-        nombreDescriptionTextView.setText(element.getNombre());
-        medicamentoDescriptionTextView.setText(element.getMedicamento());
-        horaDescriptionTextView.setText(element.getHora());
+        nombreEditText = findViewById(R.id.nombreDescriptionTextView);
+        tipoEditText = findViewById(R.id.medicamentoDescriptionTextView);
+        horaEditText = findViewById(R.id.horaDescriptionTextView);
 
-        Button modificarNombreButton = findViewById(R.id.modificarNombreButton);
-        modificarNombreButton.setOnClickListener(new View.OnClickListener() {
+        nombreEditText.setText(element.getNombre());
+        tipoEditText.setText(element.getMedicamento());
+        horaEditText.setText(element.getHora());
+
+        Button btnAceptar = findViewById(R.id.btnAgregar);
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // abrir un cuadro de diálogo para ingresar el nuevo nombre
-                AlertDialog.Builder builder = new AlertDialog.Builder(DescriptionActivity.this);
-                builder.setTitle("Modificar nombre");
+            public void onClick(View view) {
+                //Obtener los datos ingresados de los EditText
+                String nombre = nombreEditText.getText().toString();
+                String tipo = tipoEditText.getText().toString();
+                String hora = horaEditText.getText().toString();
 
-                // agregar un EditText para ingresar el nuevo nombre
-                final EditText input = new EditText(DescriptionActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setText(element.getNombre()); // mostrar el nombre actual
-                builder.setView(input);
+                //Actualizar los valores del objeto ListElement
+                ListElement updatedElement = new ListElement(element.getColor(), nombre, tipo, hora);
 
-                // agregar los botones de "Aceptar" y "Cancelar"
-                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String nuevoNombre = input.getText().toString();
-                        modificarNombre(nuevoNombre); // llamar al método modificarNombre()
-                    }
-                });
-                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
+                //Intent para agregar los datos como extras
+                Intent intent = new Intent();
+                intent.putExtra("position", getIntent().getIntExtra("position", -1));
+                intent.putExtra("ListElement", updatedElement);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
     }
-
-    // método para modificar el nombre del elemento actual
-    public void modificarNombre(String nuevoNombre) {
-        element.setNombre(nuevoNombre); // establecer el nuevo nombre
-        nombreDescriptionTextView.setText(nuevoNombre); // actualizar la vista
-    }
-
-    public void back(View v) {
+    public void back(View v){
         finish();
     }
-
 }

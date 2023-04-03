@@ -26,12 +26,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="Description"
+        android:text="Descripción"
         android:textColor="@color/black"
         android:textSize="50sp"
         android:textStyle="bold"/>
 
-    <TextView
+    <EditText
         android:id="@+id/nombreDescriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         android:textSize="40sp"
         android:textStyle="bold"/>
 
-    <TextView
+    <EditText
         android:id="@+id/medicamentoDescriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
         android:textSize="25sp"
         android:textStyle="bold"/>
 
-    <TextView
+    <EditText
         android:id="@+id/horaDescriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,10 +77,13 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/modificarNombreButton"
+        android:id="@+id/btnAgregar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Modificar nombre"
-        android:layout_below="@id/medicamentoDescriptionTextView"/>
+        android:text="Aceptar"
+        android:layout_below="@+id/medicamentoDescriptionTextView"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/black"/>
 
 </RelativeLayout>

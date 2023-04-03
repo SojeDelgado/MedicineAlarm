@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Variable para identificar el elemento esperado en la actividad Agregar.
     private static final int AGREGAR_ELEMENTO_REQUEST = 1;
+    private static final int EDITAR_ELEMENTO_REQUEST = 2;
 
     Button btnAgregar;
     @Override
@@ -42,14 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void init(){
         elements = new ArrayList<>();
-        elements.add(new ListElement("#775447","Paracetamol","Pastilla","01:21 p.m."));
-        /*elements.add(new ListElement("#775447","Simvastatina ","Pastilla","06:00 a.m."));
-        elements.add(new ListElement("#775447","Aspirina ","Pastilla","02:00 a.m."));
-        elements.add(new ListElement("#775447","Omeprazol ","Pastilla","05:34 p.m."));
-        elements.add(new ListElement("#775447","Lexotiroxina","Pastilla","08:30 p.m."));
-        elements.add(new ListElement("#775447","Ramipril ","Pastilla","12:00 p.m."));
-        elements.add(new ListElement("#775447","Amlodipina ","Pastilla","11:00 a.m."));
-        elements.add(new ListElement("#775447","Atorvastatina ","Pastilla","01:21 a.m."));*/
+        elements.add(new ListElement("#000000","Paracetamol","Pastilla","01:21 p.m."));
+        elements.add(new ListElement("#000000","Simvastatina ","Pastilla","06:00 a.m."));
+        elements.add(new ListElement("#000000","Aspirina ","Pastilla","02:00 a.m."));
+        elements.add(new ListElement("#000000","Omeprazol ","Pastilla","05:34 p.m."));
+        elements.add(new ListElement("#000000","Lexotiroxina","Pastilla","08:30 p.m."));
+        elements.add(new ListElement("#000000","Ramipril ","Pastilla","12:00 p.m."));
+        elements.add(new ListElement("#000000","Amlodipina ","Pastilla","11:00 a.m."));
+        elements.add(new ListElement("#000000","Atorvastatina ","Pastilla","01:21 a.m."));
 
         //Pasamos todos los valores que creamos a la página principal mediante el ListAdapter
         ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
@@ -63,10 +64,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(listAdapter);
     }
-    public void moveToDescriptoin(ListElement item){
-        Intent intent = new Intent(this, DescriptionActivity.class);
-        intent.putExtra("ListElement", item);
-        startActivity(intent);
+    public void moveToDescriptoin(ListElement element){
+        Intent intent = new Intent(MainActivity.this, DescriptionActivity.class);
+        intent.putExtra("ListElement", element);
+        int position = elements.indexOf(element);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, EDITAR_ELEMENTO_REQUEST);
     }
 
     /*public void init() {
@@ -91,20 +94,25 @@ public class MainActivity extends AppCompatActivity {
             // Agregar un nuevo elemento al ArrayList
             elements.add(new ListElement(generarColorAleatorio(), nombre, tipo, hora));
 
-            // Actualizar el RecyclerView con el nuevo elemento
-            ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(ListElement item) {
-                    moveToDescriptoin(item);
-                }
-            });
-            RecyclerView recyclerView = findViewById(R.id.listRecycleView);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(listAdapter);
+        } else if (requestCode == EDITAR_ELEMENTO_REQUEST && resultCode == RESULT_OK) {
+            int position = data.getIntExtra("position", -1);
+            if (position != -1) {
+                ListElement updatedElement = (ListElement) data.getSerializableExtra("ListElement");
+                elements.set(position, updatedElement);
+            }
         }
+        // Actualizar el RecyclerView con el nuevo elemento
+        ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(ListElement item) {
+                moveToDescriptoin(item);
+            }
+        });
+        RecyclerView recyclerView = findViewById(R.id.listRecycleView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(listAdapter);
     }
-
 
     //Generar colores aleatorios para los colores de las casillas
     private String generarColorAleatorio() {
@@ -125,6 +133,4 @@ public class MainActivity extends AppCompatActivity {
         String color = String.format("#%02x%02x%02x", red, green, blue);
         return color;
     }
-
-
 }
