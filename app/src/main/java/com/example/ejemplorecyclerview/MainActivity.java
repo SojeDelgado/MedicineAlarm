@@ -1,10 +1,11 @@
 package com.example.ejemplorecyclerview;
 
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,9 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+public class MainActivity extends AppCompatActivity {
     private List<ListElement> elements;
     private ListAdapter listAdapter;
 
@@ -41,29 +41,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void init(){
-        elements = new ArrayList<>();
-        elements.add(new ListElement("#000000","Paracetamol","Pastilla","01:21 p.m."));
-        elements.add(new ListElement("#000000","Simvastatina ","Pastilla","06:00 a.m."));
-        elements.add(new ListElement("#000000","Aspirina ","Pastilla","02:00 a.m."));
-        elements.add(new ListElement("#000000","Omeprazol ","Pastilla","05:34 p.m."));
-        elements.add(new ListElement("#000000","Lexotiroxina","Pastilla","08:30 p.m."));
-        elements.add(new ListElement("#000000","Ramipril ","Pastilla","12:00 p.m."));
-        elements.add(new ListElement("#000000","Amlodipina ","Pastilla","11:00 a.m."));
-        elements.add(new ListElement("#000000","Atorvastatina ","Pastilla","01:21 a.m."));
-
-        //Pasamos todos los valores que creamos a la página principal mediante el ListAdapter
-        ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(ListElement item) {
-                moveToDescriptoin(item);
-            }
-        });
-        RecyclerView recyclerView = findViewById(R.id.listRecycleView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(listAdapter);
-    }
     public void moveToDescriptoin(ListElement element){
         Intent intent = new Intent(MainActivity.this, DescriptionActivity.class);
         intent.putExtra("ListElement", element);
@@ -92,10 +69,71 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         // Actualizar el RecyclerView con el nuevo elemento
-        ListAdapter listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
+        listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ListElement item) {
                 moveToDescriptoin(item);
+            }
+        }, new ListAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(ListElement item) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Eliminar elemento");
+                builder.setMessage("¿Seguro que desea eliminar este elemento?");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        elements.remove(item);
+                        RecyclerView recyclerView = findViewById(R.id.listRecycleView);
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setAdapter(listAdapter);
+                    }
+                });
+                builder.setNegativeButton("No", null);
+                builder.show();
+            }
+
+        });
+        RecyclerView recyclerView = findViewById(R.id.listRecycleView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(listAdapter);
+    }
+
+    public void init(){
+        elements = new ArrayList<>();
+        elements.add(new ListElement("#000000","Paracetamol","Pastilla","01:21 p.m."));
+        elements.add(new ListElement("#000000","Simvastatina ","Pastilla","06:00 a.m."));
+        elements.add(new ListElement("#000000","Aspirina ","Pastilla","02:00 a.m."));
+        elements.add(new ListElement("#000000","Omeprazol ","Pastilla","05:34 p.m."));
+        elements.add(new ListElement("#000000","Lexotiroxina","Pastilla","08:30 p.m."));
+        elements.add(new ListElement("#000000","Ramipril ","Pastilla","12:00 p.m."));
+        elements.add(new ListElement("#000000","Amlodipina ","Pastilla","11:00 a.m."));
+        elements.add(new ListElement("#000000","Atorvastatina ","Pastilla","01:21 a.m."));
+
+        //Pasamos todos los valores que creamos a la página principal mediante el ListAdapter
+        listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(ListElement item) {
+                moveToDescriptoin(item);
+            }
+        }, new ListAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(ListElement item) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Eliminar elemento");
+                builder.setMessage("¿Seguro que desea eliminar este elemento?");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        elements.remove(item);
+                        RecyclerView recyclerView = findViewById(R.id.listRecycleView);
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setAdapter(listAdapter);
+                    }
+                });
+                builder.setNegativeButton("No", null);
+                builder.show();
             }
         });
         RecyclerView recyclerView = findViewById(R.id.listRecycleView);
