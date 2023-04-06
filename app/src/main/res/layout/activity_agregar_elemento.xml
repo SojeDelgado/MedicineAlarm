@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".AgregarElementoActivity">
 
+    <TextView
+        android:id="@+id/title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medicamentos"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
     <EditText
         android:id="@+id/editTextNombre"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Nombre" />
+        android:hint="Nombre del medicamento"
+        android:inputType="text"
+        android:layout_below="@id/title_text_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
     <EditText
         android:id="@+id/editTextTipo"
@@ -19,20 +33,28 @@
         android:layout_below="@id/editTextNombre"
         android:hint="Tipo" />
 
-    <EditText
-        android:id="@+id/editTextHora"
-        android:layout_width="match_parent"
+    <TimePicker
+        android:id="@+id/time_picker_hora_toma"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextTipo"
-        android:hint="Hora" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/btnAgregarElemento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextHora"
+        android:layout_below="@id/time_picker_hora_toma"
         android:layout_centerHorizontal="true"
         android:text="Agregar"
         app:iconTint="#302E2E" />
+
+    <ListView
+        android:id="@+id/list_medicamentos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnAgregarElemento"
+        android:layout_marginTop="16dp" />
 
 </RelativeLayout>
