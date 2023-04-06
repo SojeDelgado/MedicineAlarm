@@ -6,11 +6,13 @@ import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -46,12 +48,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = mInflater.inflate(R.layout.list_element,null);
+        View view = mInflater.from(parent.getContext()).inflate(R.layout.list_element,parent,false);
         return new ListAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ListAdapter.ViewHolder holder, final int position){
+        holder.cv.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_trancition));
         //holder.bindData(mData.get(position));
 
         final ListElement item = mData.get(position);
@@ -76,6 +79,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;
         TextView nombre, medicamento, hora;
+        CardView cv;
         Switch onOff;
 
         ViewHolder(View itemView){
@@ -84,6 +88,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             nombre = itemView.findViewById(R.id.nombreTextView);
             medicamento = itemView.findViewById(R.id.medicamentoTextView);
             hora = itemView.findViewById(R.id.horaTextView);
+            cv = itemView.findViewById(R.id.cv);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
