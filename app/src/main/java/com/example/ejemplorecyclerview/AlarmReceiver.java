@@ -1,5 +1,6 @@
 package com.example.ejemplorecyclerview;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.Manifest;
 import android.app.AlarmManager;
@@ -18,55 +19,31 @@ import androidx.core.content.ContextCompat;
 import java.util.Calendar;
 
 public class AlarmReceiver extends BroadcastReceiver {
-
-    private static final int PERMISSION_REQUEST_CODE = 100;
-
-    @Override
+    @SuppressLint("MissingPermission")
     public void onReceive(Context context, Intent intent) {
-        // Verificar permiso
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            // Permiso concedido, mostrar notificación
-            showNotification(context);
-        } else {
-            // Permiso denegado, solicitar permiso al usuario
-            ActivityCompat.requestPermissions((Activity) context,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    PERMISSION_REQUEST_CODE);
-        }
-    }
+        // Extrae los datos de la alarma que se guardaron en el Intent
+        int id = intent.getIntExtra("id", 0);
+        String title = intent.getStringExtra("title");
+        String message = intent.getStringExtra("message");
 
-    private void showNotification(Context context) {
-        // Crear objeto PendingIntent
-        Intent resultIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Crear objeto NotificationCompat.Builder
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+        // Crea el objeto NotificationCompat.Builder
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel_id")
                 .setSmallIcon(R.drawable.first_aid_kit)
-                .setContentTitle("Título de la notificación")
-                .setContentText("Texto de la notificación")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setAutoCancel(true);
 
-        // Definir el id de la notificación
-        int notificationId = 1;
+        // Crea un intent para abrir la actividad correspondiente cuando se toque la notificación
+        Intent resultIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
 
-        // Mostrar la notificación
+        // Crea la notificación y la muestra
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(notificationId, builder.build());
+        notificationManager.notify(id, builder.build());
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permiso concedido, mostrar notificación
-                showNotification(context);
-            } else {
-                // Permiso denegado, no se puede mostrar la notificación
-                Toast.makeText(context, "El permiso ha sido denegado. No se puede mostrar la notificación.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 }
