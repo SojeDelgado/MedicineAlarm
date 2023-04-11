@@ -38,7 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // Crea un intent para abrir la actividad correspondiente cuando se toque la notificación
         Intent resultIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         builder.setContentIntent(pendingIntent);
 
         // Crea la notificación y la muestra
