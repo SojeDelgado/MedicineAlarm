@@ -15,7 +15,12 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 //Clase que nos servirá de puente para el list_element.xml (Para que se muestren los datos en el menú principal)
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
@@ -100,11 +105,24 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         }
 
-        void bindData(final ListElement item){
+        void bindData(final ListElement item) {
             iconImage.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.SRC_IN);
             nombre.setText(item.getNombre());
             medicamento.setText(item.getMedicamento());
-            hora.setText(String.valueOf(item.getHora()));
+
+            int hora2 = item.getHora();
+            int minutos = hora2%100;
+            hora2 = hora2 / 100;
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, hora2);
+            calendar.set(Calendar.MINUTE, minutos);
+            calendar.set(Calendar.SECOND, 0);
+            Date date = calendar.getTime();
+            DateFormat dateFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+            String horaFormateada = dateFormat.format(date);
+
+            hora.setText(horaFormateada);
+
             if (onOff != null) {
                 onOff.setChecked(item.isOnOff());
             }
