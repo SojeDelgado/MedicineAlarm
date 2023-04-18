@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
             // Obtener los datos ingresados en la actividad "AgregarElementoActivity"
             String nombre = data.getStringExtra("nombre");
             String tipo = data.getStringExtra("tipo");
-            String hora = data.getStringExtra("hora");
+            int hora = data.getIntExtra("hora", 0);
             // Agregar un nuevo elemento al ArrayList
-            elements.add(new ListElement(generarColorAleatorio(), nombre, tipo, hora));
+            elements.add(new ListElement("#000000", nombre, tipo, hora));
 
         } else if (requestCode == EDITAR_ELEMENTO_REQUEST && resultCode == RESULT_OK) {
             int position = data.getIntExtra("position", -1);
@@ -102,14 +102,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void init(){
         elements = new ArrayList<>();
-        elements.add(new ListElement("#000000","Paracetamol","Pastilla","01:21 p.m."));
-        elements.add(new ListElement("#000000","Simvastatina ","Pastilla","06:00 a.m."));
-        elements.add(new ListElement("#000000","Aspirina ","Pastilla","02:00 a.m."));
-        elements.add(new ListElement("#000000","Omeprazol ","Pastilla","05:34 p.m."));
-        elements.add(new ListElement("#000000","Lexotiroxina","Pastilla","08:30 p.m."));
-        elements.add(new ListElement("#000000","Ramipril ","Pastilla","12:00 p.m."));
-        elements.add(new ListElement("#000000","Amlodipina ","Pastilla","11:00 a.m."));
-        elements.add(new ListElement("#000000","Atorvastatina ","Pastilla","01:21 a.m."));
+        elements.add(new ListElement("#000000","Paracetamol","Pastilla",2000));
+        elements.add(new ListElement("#000000","Simvastatina ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Aspirina ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Omeprazol ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Lexotiroxina","Pastilla",2000));
+        elements.add(new ListElement("#000000","Ramipril ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Amlodipina ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Atorvastatina ","Pastilla",2000));
 
         //Pasamos todos los valores que creamos a la página principal mediante el ListAdapter
         listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
@@ -142,23 +142,4 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(listAdapter);
     }
 
-    //Generar colores aleatorios para los colores de las casillas
-    private String generarColorAleatorio() {
-        Random random = new Random();
-
-        int red = random.nextInt(256);
-        int green = random.nextInt(256);
-        int blue = random.nextInt(256);
-
-        // Asegurarse de que el color no sea demasiado brillante o demasiado oscuro
-        while (red + green + blue > 500 || red + green + blue < 200) {
-            red = random.nextInt(256);
-            green = random.nextInt(256);
-            blue = random.nextInt(256);
-        }
-
-        // Convertir los valores RGB a formato hexadecimal
-        String color = String.format("#%02x%02x%02x", red, green, blue);
-        return color;
-    }
 }

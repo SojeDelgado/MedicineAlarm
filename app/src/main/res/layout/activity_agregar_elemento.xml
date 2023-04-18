@@ -18,37 +18,65 @@
 
     <EditText
         android:id="@+id/editTextNombre"
+        android:layout_below="@id/title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Nombre del medicamento"
-        android:inputType="text"
-        android:layout_below="@id/title_text_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Nombre"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        />
 
-    <EditText
+    <Spinner
         android:id="@+id/editTextTipo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="194dp"
+        android:layout_height="36dp"
         android:layout_below="@id/editTextNombre"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:hint="Tipo" />
 
     <TimePicker
         android:id="@+id/time_picker_hora_toma"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="324dp"
+        android:layout_height="198dp"
         android:layout_below="@id/editTextTipo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:calendarViewShown="false"
+        android:timePickerMode="spinner" />
 
     <Button
         android:id="@+id/btnAgregarElemento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/time_picker_hora_toma"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Agregar"
-        app:iconTint="#302E2E" />
+        app:iconTint="#302E2E"
+        android:backgroundTint="@color/black"/>
+
+    <Button
+        android:id="@+id/btnCancelar"
+        android:onClick="cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@+id/time_picker_hora_toma"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/black"
+        android:text="Cancelar" />
 
     <ListView
         android:id="@+id/list_medicamentos"
