@@ -82,7 +82,6 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
                 int hora = nombreTimePicker.getCurrentHour();
                 int minutos = nombreTimePicker.getCurrentMinute();
-                int horaYMinutos = hora * 60 + minutos;
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, hora);
@@ -108,7 +107,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("nombre", nombre);
                 intent.putExtra("tipo", tipo);
-                intent.putExtra("hora",horaYMinutos);
+                intent.putExtra("hora",hora);
                 // Establecer el resultado y finalizar la actividad
                 setResult(RESULT_OK, intent);
 

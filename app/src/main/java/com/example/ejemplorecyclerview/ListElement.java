@@ -13,7 +13,7 @@ public class ListElement implements Serializable {
         this.color = color;
         this.nombre = nombre;
         this.medicamento = medicamento;
-        this.hora = hora;
+        this.hora = Integer.parseInt(String.valueOf(hora));
         onOff = false;
     }
 
