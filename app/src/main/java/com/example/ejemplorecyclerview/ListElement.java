@@ -6,10 +6,10 @@ public class ListElement implements Serializable {
     public String color;
     public String nombre;
     public String medicamento;
-    public String hora;
+    public int hora;
     public boolean onOff;
 
-    public ListElement(String color, String nombre, String medicamento, String hora) {
+    public ListElement(String color, String nombre, String medicamento, int hora) {
         this.color = color;
         this.nombre = nombre;
         this.medicamento = medicamento;
@@ -41,11 +41,11 @@ public class ListElement implements Serializable {
         this.medicamento = medicamento;
     }
 
-    public String getHora() {
+    public int getHora() {
         return hora;
     }
 
-    public void setHora(String hora) {
+    public void setHora(int hora) {
         this.hora = hora;
     }
 

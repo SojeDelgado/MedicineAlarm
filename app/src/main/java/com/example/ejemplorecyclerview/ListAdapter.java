@@ -104,7 +104,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             iconImage.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.SRC_IN);
             nombre.setText(item.getNombre());
             medicamento.setText(item.getMedicamento());
-            hora.setText(item.getHora());
+            hora.setText(String.valueOf(item.getHora()));
             if (onOff != null) {
                 onOff.setChecked(item.isOnOff());
             }

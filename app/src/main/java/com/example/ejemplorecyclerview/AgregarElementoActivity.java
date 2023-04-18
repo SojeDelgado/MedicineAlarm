@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -25,12 +27,13 @@ import java.util.List;
 public class AgregarElementoActivity extends AppCompatActivity {
     private TextView nombreTextview;
     private EditText nombreEditText;
-    private EditText tipoEditText;
+    private Spinner tipoMedicamentoSpinner;
     private TimePicker nombreTimePicker;
     ListView nombrelistView;
     private MedicamentosDatabase mDatabase;
     private List<Medicamento> mMedicamentos;
     private MedicamentosAdapter mAdapter;
+    private ListElement element;
 
 
     @Override
@@ -38,19 +41,35 @@ public class AgregarElementoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_elemento);
 
+        element = (ListElement) getIntent().getSerializableExtra("ListElement");
+
+        String[] tipoMedicamentos = {
+                "Analgesicos",
+                "Antibioticos",
+                "Antidepresivos",
+                "Antihistamínicos",
+                "Antinflamatorios"
+        };
+
         mDatabase = new MedicamentosDatabase(this);
         mMedicamentos = mDatabase.obtenerMedicamentos();
         mAdapter = new MedicamentosAdapter(this, (ArrayList<Medicamento>) mMedicamentos);
 
-        //ListView listView = findViewById(R.id.list_medicamentos);
-        //listView.setAdapter(mAdapter);
-
         //Variable para asignar los valores de los EditTExt
         nombreTextview = findViewById(R.id.title_text_view);
         nombreEditText = findViewById(R.id.editTextNombre);
-        tipoEditText = findViewById(R.id.editTextTipo);
+        tipoMedicamentoSpinner = findViewById(R.id.editTextTipo);
         nombreTimePicker = findViewById(R.id.time_picker_hora_toma);
         nombrelistView = findViewById(R.id.list_medicamentos);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoMedicamentos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tipoMedicamentoSpinner.setAdapter(adapter);
+
+        if (element != null) {
+            int spinnerPosition = adapter.getPosition(element.getMedicamento());
+            tipoMedicamentoSpinner.setSelection(spinnerPosition);
+        }
 
 
         Button btnAceptar = findViewById(R.id.btnAgregarElemento);
@@ -58,10 +77,9 @@ public class AgregarElementoActivity extends AppCompatActivity {
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //Obtener los datos ingresados de los EditText
                 String nombre = nombreEditText.getText().toString();
-                String tipo = tipoEditText.getText().toString();
+                String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
                 int hora = nombreTimePicker.getCurrentHour();
                 int minutos = nombreTimePicker.getCurrentMinute();
 
@@ -71,7 +89,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 calendar.set(Calendar.SECOND, 0);
                 Date horaToma = calendar.getTime();
 
-                long id = mDatabase.insertarMedicamento(nombre, horaToma);
+                int id = (int) mDatabase.insertarMedicamento(nombre, horaToma);
                 if (id == -1) {
                     Toast.makeText(AgregarElementoActivity.this, "No se pudo agregar el medicamento", Toast.LENGTH_SHORT).show();
                 } else {
@@ -84,7 +102,6 @@ public class AgregarElementoActivity extends AppCompatActivity {
 
                     Toast.makeText(AgregarElementoActivity.this, "Medicamento agregado correctamente", Toast.LENGTH_SHORT).show();
                 }
-                tipoEditText.setText("");
 
                 //Intent para agregar los datos como extras
                 Intent intent = new Intent();
@@ -123,5 +140,8 @@ public class AgregarElementoActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mDatabase.close();
+    }
+    public void cancel(View view) {
+        finish();
     }
 }
