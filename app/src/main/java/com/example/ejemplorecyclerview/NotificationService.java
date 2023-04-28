@@ -18,8 +18,10 @@ import androidx.core.app.NotificationCompat;
 public class NotificationService extends IntentService {
     private NotificationManager notificationManager;
     private PendingIntent pendingIntent;
-    private static int NOTIFICATION_ID = 1;
     Notification notification;
+    private static final int NOTIFICATION_ID_BASE = 1000; // ID base para las notificaciones
+    private static int notificationId = NOTIFICATION_ID_BASE;
+
 
 
     public NotificationService(String name) {
@@ -42,8 +44,9 @@ public class NotificationService extends IntentService {
 
         String message = getString(R.string.new_notification);
 
+        int NOTIFY_ID = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final int NOTIFY_ID = 0; // ID of notification
+            NOTIFY_ID = notificationId++;
             String id = NOTIFICATION_CHANNEL_ID; // default_channel_id
             String title = NOTIFICATION_CHANNEL_ID; // Default Channel
             PendingIntent pendingIntent;
@@ -88,7 +91,7 @@ public class NotificationService extends IntentService {
                     .setAutoCancel(true)
                     .setContentTitle(getString(R.string.app_name)).setCategory(Notification.CATEGORY_SERVICE)
                     .setContentText(message).build();
-            notificationManager.notify(NOTIFICATION_ID, notification);
+            notificationManager.notify(NOTIFY_ID, notification);
         }
     }
 }

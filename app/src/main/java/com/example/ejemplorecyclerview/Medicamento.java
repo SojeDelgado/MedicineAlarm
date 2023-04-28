@@ -6,6 +6,8 @@ public class Medicamento {
     private String nombre;
     private Date horaToma;
 
+    public static final String NOMBRE_MEDICAMENTO = "nombre_medicamento";
+
     public Medicamento(String nombre, Date horaToma) {
         this.nombre = nombre;
         this.horaToma = horaToma;
