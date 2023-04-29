@@ -79,7 +79,7 @@ public class DescriptionActivity extends AppCompatActivity {
                 calendar.set(Calendar.SECOND, 0);
 
                 //Actualizar los valores del objeto ListElement
-                MedicamentoElement updatedElement = new MedicamentoElement(element.getColor(), nombre, tipo, horaDate);
+                MedicamentoElement updatedElement = new MedicamentoElement(element.getColor(), nombre, tipo, horaDate,true);
 
                 //Intent para agregar los datos como extras
                 Intent intent = new Intent();

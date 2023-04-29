@@ -10,12 +10,12 @@ public class MedicamentoElement implements Serializable {
     public Date hora;
     public boolean onOff;
 
-    public MedicamentoElement(String color, String nombre, String medicamento, Date hora) {
+    public MedicamentoElement(String color, String nombre, String medicamento, Date hora, Boolean onOff) {
         this.color = color;
         this.nombre = nombre;
         this.medicamento = medicamento;
         this.hora = hora;
-        onOff = false;
+        this.onOff = onOff;
     }
 
     public String getColor() {

@@ -28,7 +28,8 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
                 + MedicamentosEntry.COLUMN_COLOR + " VARCHAR2(7) NOT NULL, "
                 + MedicamentosEntry.COLUMN_NOMBRE + " TEXT NOT NULL, "
                 + MedicamentosEntry.COLUMN_MEDICAMENTO + " TEXT NOT NULL, "
-                + MedicamentosEntry.COLUMN_HORA_TOMA + " INTEGER NOT NULL);";
+                + MedicamentosEntry.COLUMN_HORA_TOMA + " INTEGER NOT NULL,"
+                + MedicamentosEntry.COLUMN_ON_OFF + " BOOLEAN NOT NULL);";
 
         db.execSQL(SQL_CREATE_MEDICAMENTOS_TABLE);
     }
@@ -41,7 +42,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertarMedicamento(String color, String nombre, String medicamento, Date horaToma) {
+    public long insertarMedicamento(String color, String nombre, String medicamento, Date horaToma, Boolean onoff) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -49,6 +50,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         values.put(MedicamentosEntry.COLUMN_NOMBRE, nombre);
         values.put(MedicamentosEntry.COLUMN_MEDICAMENTO, medicamento);
         values.put(MedicamentosEntry.COLUMN_HORA_TOMA, horaToma.getTime());
+        values.put(MedicamentosEntry.COLUMN_ON_OFF, onoff);
 
         long id = db.insert(MedicamentosEntry.TABLE_NAME, null, values);
         db.close();
@@ -66,7 +68,9 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
                 MedicamentosEntry.COLUMN_NOMBRE,
                 MedicamentosEntry.COLUMN_MEDICAMENTO,
                 MedicamentosEntry.COLUMN_HORA_TOMA,
+                MedicamentosEntry.COLUMN_ON_OFF
         };
+
 
         Cursor cursor = db.query(
                 MedicamentosEntry.TABLE_NAME,
@@ -85,10 +89,11 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
             String nombre = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_NOMBRE));
             String medicamento = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_MEDICAMENTO));
             long horaTomaMillis = cursor.getLong(cursor.getColumnIndex(MedicamentosEntry.COLUMN_HORA_TOMA));
+            boolean onOff = (cursor.getInt(cursor.getColumnIndex(MedicamentosEntry.COLUMN_ON_OFF)) != 0);
 
             Date hora = new Date(horaTomaMillis);
 
-            MedicamentoElement medi = new MedicamentoElement(color,nombre, medicamento, hora);
+            MedicamentoElement medi = new MedicamentoElement(color,nombre, medicamento, hora, onOff);
             medicamentos.add(medi);
         }
 
@@ -98,11 +103,19 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         return medicamentos;
     }
 
+    public long eliminarMedicamento(MedicamentoElement id) {
+        SQLiteDatabase db = getWritableDatabase();
+        long eliminados = db.delete(MedicamentosEntry.TABLE_NAME, MedicamentosEntry._ID + "=?", new String[] { String.valueOf(id) });
+        db.close();
+        return eliminados;
+    }
+
     public static class MedicamentosEntry implements BaseColumns {
         public static final String TABLE_NAME = "medicamentos";
         public static final String COLUMN_COLOR = "color";
         public static final String COLUMN_NOMBRE = "nombre";
         public static final String COLUMN_MEDICAMENTO = "medicamento";
         public static final String COLUMN_HORA_TOMA = "hora_toma";
+        public static final String COLUMN_ON_OFF = "onoff";
     }
 }

@@ -29,6 +29,47 @@ public class MainActivity extends AppCompatActivity {
     private static final int EDITAR_ELEMENTO_REQUEST = 2;
 
     Button btnAgregar;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Obtener los elementos de la base de datos y actualizar la lista
+        elements = dbHelper.obtenerMedicamentos();
+
+        // Actualizar el RecyclerView con los datos actualizados
+        listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(MedicamentoElement item) {
+                moveToDescription(item);
+            }
+        }, new ListAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(MedicamentoElement item) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Eliminar elemento");
+                builder.setMessage("¿Seguro que desea eliminar este elemento?");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        elements.remove(item);
+                        dbHelper.eliminarMedicamento(item);
+                        RecyclerView recyclerView = findViewById(R.id.listRecycleView);
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setAdapter(listAdapter);
+                    }
+                });
+                builder.setNegativeButton("No", null);
+                builder.show();
+            }
+
+        });
+        RecyclerView recyclerView = findViewById(R.id.listRecycleView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(listAdapter);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +105,10 @@ public class MainActivity extends AppCompatActivity {
             String nombre = data.getStringExtra("nombre");
             String medicamento = data.getStringExtra("tipo");
             Date hora = (Date) data.getSerializableExtra("hora");
+            //boolean onoff = data.getBooleanExtra("onof");
             // Agregar un nuevo elemento al ArrayList
-            elements.add(new MedicamentoElement("#000000", nombre, medicamento, hora));
-            dbHelper.insertarMedicamento("#000000",nombre, medicamento, hora);
+            elements.add(new MedicamentoElement("#000000", nombre, medicamento, hora,true));
+            dbHelper.insertarMedicamento("#000000",nombre, medicamento, hora, true);
         } else if (requestCode == EDITAR_ELEMENTO_REQUEST && resultCode == RESULT_OK) {
             int position = data.getIntExtra("position", -1);
             if (position != -1) {
@@ -111,14 +153,14 @@ public class MainActivity extends AppCompatActivity {
         hora.setHours(10);
         hora.setMinutes(10);
         elements = new ArrayList<>();
-        elements.add(new MedicamentoElement("#000000", "Paracetamol", "Pastilla", hora));
-        elements.add(new MedicamentoElement("#000000", "Simvastatina ", "Pastilla", hora));
-        elements.add(new MedicamentoElement("#000000", "Aspirina ", "Pastilla", hora));
-        elements.add(new MedicamentoElement("#000000", "Omeprazol ", "Pastilla", hora));
-        elements.add(new MedicamentoElement("#000000", "Lexotiroxina", "Pastilla", hora));
-        elements.add(new MedicamentoElement("#000000", "Ramipril ", "Pastilla", hora));
-        elements.add(new MedicamentoElement("#000000", "Amlodipina ", "Pastilla", hora));
-        elements.add(new MedicamentoElement("#000000", "Atorvastatina ", "Pastilla", hora));
+        elements.add(new MedicamentoElement("#000000", "Paracetamol", "Pastilla", hora,false));
+        elements.add(new MedicamentoElement("#000000", "Simvastatina ", "Pastilla", hora,false));
+        elements.add(new MedicamentoElement("#000000", "Aspirina ", "Pastilla", hora,false));
+        elements.add(new MedicamentoElement("#000000", "Omeprazol ", "Pastilla", hora,false));
+        elements.add(new MedicamentoElement("#000000", "Lexotiroxina", "Pastilla", hora,false));
+        elements.add(new MedicamentoElement("#000000", "Ramipril ", "Pastilla", hora,false));
+        elements.add(new MedicamentoElement("#000000", "Amlodipina ", "Pastilla", hora,false));
+        elements.add(new MedicamentoElement("#000000", "Atorvastatina ", "Pastilla", hora,false));
 
         //Pasamos todos los valores que creamos a la página principal mediante el ListAdapter
         listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
