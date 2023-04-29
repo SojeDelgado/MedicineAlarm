@@ -22,6 +22,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private List<MedicamentoElement> elements;
     private ListAdapter listAdapter;
+    private MedicamentosDatabase dbHelper;
 
     //Variable para identificar el elemento esperado en la actividad Agregar.
     private static final int AGREGAR_ELEMENTO_REQUEST = 1;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbHelper = new MedicamentosDatabase(this);
         init();
 
         btnAgregar = findViewById(R.id.btnAgregar);
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void moveToDescriptoin(MedicamentoElement element){
+    public void moveToDescription(MedicamentoElement element){
         Intent intent = new Intent(MainActivity.this, DescriptionActivity.class);
         intent.putExtra("ListElement", element);
         int position = elements.indexOf(element);
@@ -59,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == AGREGAR_ELEMENTO_REQUEST && resultCode == RESULT_OK) {
             // Obtener los datos ingresados en la actividad "AgregarElementoActivity"
             String nombre = data.getStringExtra("nombre");
-            String tipo = data.getStringExtra("tipo");
+            String medicamento = data.getStringExtra("tipo");
             Date hora = (Date) data.getSerializableExtra("hora");
             // Agregar un nuevo elemento al ArrayList
-            elements.add(new MedicamentoElement("#000000", nombre, tipo, hora));
-
+            elements.add(new MedicamentoElement("#000000", nombre, medicamento, hora));
+            dbHelper.insertarMedicamento("#000000",nombre, medicamento, hora);
         } else if (requestCode == EDITAR_ELEMENTO_REQUEST && resultCode == RESULT_OK) {
             int position = data.getIntExtra("position", -1);
             if (position != -1) {
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(MedicamentoElement item) {
-                moveToDescriptoin(item);
+                moveToDescription(item);
             }
         }, new ListAdapter.OnItemLongClickListener() {
             @Override
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(MedicamentoElement item) {
-                moveToDescriptoin(item);
+                moveToDescription(item);
             }
         }, new ListAdapter.OnItemLongClickListener() {
             @Override

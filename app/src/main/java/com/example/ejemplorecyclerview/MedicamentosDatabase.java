@@ -25,7 +25,9 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String SQL_CREATE_MEDICAMENTOS_TABLE = "CREATE TABLE " + MedicamentosEntry.TABLE_NAME + " ("
                 + MedicamentosEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + MedicamentosEntry.COLUMN_COLOR + " VARCHAR2(7) NOT NULL, "
                 + MedicamentosEntry.COLUMN_NOMBRE + " TEXT NOT NULL, "
+                + MedicamentosEntry.COLUMN_MEDICAMENTO + " TEXT NOT NULL, "
                 + MedicamentosEntry.COLUMN_HORA_TOMA + " INTEGER NOT NULL);";
 
         db.execSQL(SQL_CREATE_MEDICAMENTOS_TABLE);
@@ -39,11 +41,13 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertarMedicamento(String nombre, Date horaToma) {
+    public long insertarMedicamento(String color, String nombre, String medicamento, Date horaToma) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(MedicamentosEntry.COLUMN_COLOR, color);
         values.put(MedicamentosEntry.COLUMN_NOMBRE, nombre);
+        values.put(MedicamentosEntry.COLUMN_MEDICAMENTO, medicamento);
         values.put(MedicamentosEntry.COLUMN_HORA_TOMA, horaToma.getTime());
 
         long id = db.insert(MedicamentosEntry.TABLE_NAME, null, values);
@@ -53,13 +57,15 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
     }
 
 
-    public List<Medicamento> obtenerMedicamentos() {
+    public List<MedicamentoElement> obtenerMedicamentos() {
         SQLiteDatabase db = getReadableDatabase();
 
         String[] projection = {
                 MedicamentosEntry._ID,
+                MedicamentosEntry.COLUMN_COLOR,
                 MedicamentosEntry.COLUMN_NOMBRE,
-                MedicamentosEntry.COLUMN_HORA_TOMA
+                MedicamentosEntry.COLUMN_MEDICAMENTO,
+                MedicamentosEntry.COLUMN_HORA_TOMA,
         };
 
         Cursor cursor = db.query(
@@ -72,15 +78,18 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
                 null
         );
 
-        List<Medicamento> medicamentos = new ArrayList<>();
+        List<MedicamentoElement> medicamentos = new ArrayList<>();
         while (cursor.moveToNext()) {
             long id = cursor.getLong(cursor.getColumnIndex(MedicamentosEntry._ID));
+            String color = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_COLOR));
             String nombre = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_NOMBRE));
+            String medicamento = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_MEDICAMENTO));
             long horaTomaMillis = cursor.getLong(cursor.getColumnIndex(MedicamentosEntry.COLUMN_HORA_TOMA));
-            Date horaToma = new Date(horaTomaMillis);
 
-            Medicamento medicamento = new Medicamento(nombre, horaToma);
-            medicamentos.add(medicamento);
+            Date hora = new Date(horaTomaMillis);
+
+            MedicamentoElement medi = new MedicamentoElement(color,nombre, medicamento, hora);
+            medicamentos.add(medi);
         }
 
         cursor.close();
@@ -91,7 +100,9 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
 
     public static class MedicamentosEntry implements BaseColumns {
         public static final String TABLE_NAME = "medicamentos";
+        public static final String COLUMN_COLOR = "color";
         public static final String COLUMN_NOMBRE = "nombre";
+        public static final String COLUMN_MEDICAMENTO = "medicamento";
         public static final String COLUMN_HORA_TOMA = "hora_toma";
     }
 }

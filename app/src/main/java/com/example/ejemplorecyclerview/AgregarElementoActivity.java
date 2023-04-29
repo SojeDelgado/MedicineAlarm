@@ -26,7 +26,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
     private TimePicker nombreTimePicker;
     ListView nombrelistView;
     private MedicamentosDatabase mDatabase;
-    private List<Medicamento> mMedicamentos;
+    private List<MedicamentoElement> mMedicamentos;
     private MedicamentosAdapter mAdapter;
     private MedicamentoElement element;
 
@@ -48,7 +48,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
 
         mDatabase = new MedicamentosDatabase(this);
         mMedicamentos = mDatabase.obtenerMedicamentos();
-        mAdapter = new MedicamentosAdapter(this, (ArrayList<Medicamento>) mMedicamentos);
+        mAdapter = new MedicamentosAdapter(this, (ArrayList<MedicamentoElement>) mMedicamentos);
 
         //Variable para asignar los valores de los EditTExt
         nombreTextview = findViewById(R.id.title_text_view);
@@ -73,21 +73,25 @@ public class AgregarElementoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Obtener los datos ingresados de los EditText
+                String color = nombreEditText.getText().toString();
                 String nombre = nombreEditText.getText().toString();
-                String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
-                int hora = nombreTimePicker.getCurrentHour();
+                String medicamento = (String) tipoMedicamentoSpinner.getSelectedItem();
+
+                Calendar calendar = Calendar.getInstance();
+                int horas = nombreTimePicker.getCurrentHour();
                 int minutos = nombreTimePicker.getCurrentMinute();
+                calendar.set(Calendar.HOUR_OF_DAY, horas);
+                calendar.set(Calendar.MINUTE, minutos);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                Date horaDate = calendar.getTime();
 
-                Date horaDate = new Date();
-                horaDate.setHours(hora);
-                horaDate.setMinutes(minutos);
-
-                int id = (int) mDatabase.insertarMedicamento(nombre, horaDate);
+                int id = (int) mDatabase.insertarMedicamento(color,nombre,medicamento, horaDate);
                 if (id == -1) {
                     Toast.makeText(AgregarElementoActivity.this, "No se pudo agregar el medicamento", Toast.LENGTH_SHORT).show();
                 } else {
-                    Medicamento medicamento = new Medicamento(nombre, horaDate);
-                    mMedicamentos.add(medicamento);
+                    MedicamentoElement medi = new MedicamentoElement(color,nombre,medicamento,horaDate);
+                    mMedicamentos.add(medi);
                     mAdapter.notifyDataSetChanged();
 
                     // Configurar la alarma
@@ -99,7 +103,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 //Intent para agregar los datos como extras
                 Intent intent = new Intent();
                 intent.putExtra("nombre", nombre);
-                intent.putExtra("tipo", tipo);
+                intent.putExtra("tipo", medicamento);
                 intent.putExtra("hora",horaDate);
                 // Establecer el resultado y finalizar la actividad
                 setResult(RESULT_OK, intent);

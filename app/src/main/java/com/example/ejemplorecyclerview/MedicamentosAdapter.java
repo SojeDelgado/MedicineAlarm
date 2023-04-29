@@ -9,15 +9,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MedicamentosAdapter extends ArrayAdapter<Medicamento> {
-    public MedicamentosAdapter(Context context, ArrayList<Medicamento> medicamentos) {
-        super(context, 0, medicamentos);
+public class MedicamentosAdapter extends ArrayAdapter<MedicamentoElement> {
+    public MedicamentosAdapter(Context context, ArrayList<MedicamentoElement> medicamentos) {
+        super(context, R.layout.medicamento_item, medicamentos);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Obtener el medicamento actual
-        Medicamento medicamento = getItem(position);
+        MedicamentoElement medicamento = getItem(position);
 
         // Reutilizar la vista si es posible
         if (convertView == null) {
