@@ -2,11 +2,7 @@ package com.example.ejemplorecyclerview;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,7 +14,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,7 +28,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
     private MedicamentosDatabase mDatabase;
     private List<Medicamento> mMedicamentos;
     private MedicamentosAdapter mAdapter;
-    private ListElement element;
+    private MedicamentoElement element;
 
 
     @Override
@@ -41,7 +36,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_elemento);
 
-        element = (ListElement) getIntent().getSerializableExtra("ListElement");
+        element = (MedicamentoElement) getIntent().getSerializableExtra("ListElement");
 
         String[] tipoMedicamentos = {
                 "Analgesicos",

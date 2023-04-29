@@ -1,15 +1,16 @@
 package com.example.ejemplorecyclerview;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class ListElement implements Serializable {
+public class MedicamentoElement implements Serializable {
     public String color;
     public String nombre;
     public String medicamento;
     public int hora;
     public boolean onOff;
 
-    public ListElement(String color, String nombre, String medicamento, int hora) {
+    public MedicamentoElement(String color, String nombre, String medicamento, int hora) {
         this.color = color;
         this.nombre = nombre;
         this.medicamento = medicamento;

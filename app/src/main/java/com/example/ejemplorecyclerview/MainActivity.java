@@ -13,11 +13,10 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
-    private List<ListElement> elements;
+    private List<MedicamentoElement> elements;
     private ListAdapter listAdapter;
 
     //Variable para identificar el elemento esperado en la actividad Agregar.
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void moveToDescriptoin(ListElement element){
+    public void moveToDescriptoin(MedicamentoElement element){
         Intent intent = new Intent(MainActivity.this, DescriptionActivity.class);
         intent.putExtra("ListElement", element);
         int position = elements.indexOf(element);
@@ -59,24 +58,24 @@ public class MainActivity extends AppCompatActivity {
             String tipo = data.getStringExtra("tipo");
             int hora = data.getIntExtra("hora", 0);
             // Agregar un nuevo elemento al ArrayList
-            elements.add(new ListElement("#000000", nombre, tipo, hora));
+            elements.add(new MedicamentoElement("#000000", nombre, tipo, hora));
 
         } else if (requestCode == EDITAR_ELEMENTO_REQUEST && resultCode == RESULT_OK) {
             int position = data.getIntExtra("position", -1);
             if (position != -1) {
-                ListElement updatedElement = (ListElement) data.getSerializableExtra("ListElement");
+                MedicamentoElement updatedElement = (MedicamentoElement) data.getSerializableExtra("ListElement");
                 elements.set(position, updatedElement);
             }
         }
         // Actualizar el RecyclerView con el nuevo elemento
         listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ListElement item) {
+            public void onItemClick(MedicamentoElement item) {
                 moveToDescriptoin(item);
             }
         }, new ListAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(ListElement item) {
+            public void onItemLongClick(MedicamentoElement item) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Eliminar elemento");
                 builder.setMessage("¿Seguro que desea eliminar este elemento?");
@@ -102,24 +101,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void init() {
         elements = new ArrayList<>();
-        elements.add(new ListElement("#000000", "Paracetamol", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Simvastatina ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Aspirina ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Omeprazol ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Lexotiroxina", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Ramipril ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Amlodipina ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Atorvastatina ", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Paracetamol", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Simvastatina ", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Aspirina ", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Omeprazol ", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Lexotiroxina", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Ramipril ", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Amlodipina ", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Atorvastatina ", "Pastilla", 2000));
 
         //Pasamos todos los valores que creamos a la página principal mediante el ListAdapter
         listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(ListElement item) {
+            public void onItemClick(MedicamentoElement item) {
                 moveToDescriptoin(item);
             }
         }, new ListAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(ListElement item) {
+            public void onItemLongClick(MedicamentoElement item) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Eliminar elemento");
                 builder.setMessage("¿Seguro que desea eliminar este elemento?");

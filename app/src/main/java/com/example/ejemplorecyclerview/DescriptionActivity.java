@@ -1,26 +1,20 @@
 package com.example.ejemplorecyclerview;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +27,7 @@ public class DescriptionActivity extends AppCompatActivity {
     private List<Medicamento> mMedicamentos;
     private MedicamentosAdapter mAdapter;
 
-    private ListElement element; // variable para almacenar el elemento actual
+    private MedicamentoElement element; // variable para almacenar el elemento actual
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -42,7 +36,7 @@ public class DescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_description);
 
         // obtener el elemento de la actividad anterior
-        element = (ListElement) getIntent().getSerializableExtra("ListElement");
+        element = (MedicamentoElement) getIntent().getSerializableExtra("ListElement");
 
         String[] tipoMedicamentos = {
                 "Analgesicos",
@@ -83,7 +77,7 @@ public class DescriptionActivity extends AppCompatActivity {
                 calendar.set(Calendar.SECOND, 0);
 
                 //Actualizar los valores del objeto ListElement
-                ListElement updatedElement = new ListElement(element.getColor(), nombre, tipo, horaYMinutos);
+                MedicamentoElement updatedElement = new MedicamentoElement(element.getColor(), nombre, tipo, horaYMinutos);
 
                 //Intent para agregar los datos como extras
                 Intent intent = new Intent();
