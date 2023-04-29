@@ -69,7 +69,9 @@ public class DescriptionActivity extends AppCompatActivity {
                 String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
                 int hora = nombreTimePicker.getCurrentHour();
                 int minutos = nombreTimePicker.getCurrentMinute();
-                int horaYMinutos = hora * 100 + minutos;
+                Date horaDate = new Date();
+                horaDate.setHours(hora);
+                horaDate.setMinutes(minutos);
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, hora);
@@ -77,7 +79,7 @@ public class DescriptionActivity extends AppCompatActivity {
                 calendar.set(Calendar.SECOND, 0);
 
                 //Actualizar los valores del objeto ListElement
-                MedicamentoElement updatedElement = new MedicamentoElement(element.getColor(), nombre, tipo, horaYMinutos);
+                MedicamentoElement updatedElement = new MedicamentoElement(element.getColor(), nombre, tipo, horaDate);
 
                 //Intent para agregar los datos como extras
                 Intent intent = new Intent();

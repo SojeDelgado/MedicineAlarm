@@ -109,27 +109,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             nombre.setText(item.getNombre());
             medicamento.setText(item.getMedicamento());
 
-            int hora2 = item.getHora();
-            int minutos = hora2%100;
-            hora2 = hora2 / 100;
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, hora2);
-            calendar.set(Calendar.MINUTE, minutos);
-            calendar.set(Calendar.SECOND, 0);
-            Date date = calendar.getTime();
+            Date hora = item.getHora();
             DateFormat dateFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-            String horaFormateada = dateFormat.format(date);
+            String horaFormateada = dateFormat.format(hora);
 
-            hora.setText(horaFormateada);
+            this.hora.setText(horaFormateada);
             if (onOff != null) {
                 onOff.setChecked(item.isOnOff());
             }
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClick(item);
-                }
-            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

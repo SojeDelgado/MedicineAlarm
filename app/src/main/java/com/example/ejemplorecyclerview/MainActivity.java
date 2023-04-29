@@ -11,8 +11,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             // Obtener los datos ingresados en la actividad "AgregarElementoActivity"
             String nombre = data.getStringExtra("nombre");
             String tipo = data.getStringExtra("tipo");
-            int hora = data.getIntExtra("hora", 0);
+            Date hora = (Date) data.getSerializableExtra("hora");
             // Agregar un nuevo elemento al ArrayList
             elements.add(new MedicamentoElement("#000000", nombre, tipo, hora));
 
@@ -100,15 +104,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init() {
+        Date hora = new Date();
+        hora.setHours(10);
+        hora.setMinutes(10);
         elements = new ArrayList<>();
-        elements.add(new MedicamentoElement("#000000", "Paracetamol", "Pastilla", 2000));
-        elements.add(new MedicamentoElement("#000000", "Simvastatina ", "Pastilla", 2000));
-        elements.add(new MedicamentoElement("#000000", "Aspirina ", "Pastilla", 2000));
-        elements.add(new MedicamentoElement("#000000", "Omeprazol ", "Pastilla", 2000));
-        elements.add(new MedicamentoElement("#000000", "Lexotiroxina", "Pastilla", 2000));
-        elements.add(new MedicamentoElement("#000000", "Ramipril ", "Pastilla", 2000));
-        elements.add(new MedicamentoElement("#000000", "Amlodipina ", "Pastilla", 2000));
-        elements.add(new MedicamentoElement("#000000", "Atorvastatina ", "Pastilla", 2000));
+        elements.add(new MedicamentoElement("#000000", "Paracetamol", "Pastilla", hora));
+        elements.add(new MedicamentoElement("#000000", "Simvastatina ", "Pastilla", hora));
+        elements.add(new MedicamentoElement("#000000", "Aspirina ", "Pastilla", hora));
+        elements.add(new MedicamentoElement("#000000", "Omeprazol ", "Pastilla", hora));
+        elements.add(new MedicamentoElement("#000000", "Lexotiroxina", "Pastilla", hora));
+        elements.add(new MedicamentoElement("#000000", "Ramipril ", "Pastilla", hora));
+        elements.add(new MedicamentoElement("#000000", "Amlodipina ", "Pastilla", hora));
+        elements.add(new MedicamentoElement("#000000", "Atorvastatina ", "Pastilla", hora));
 
         //Pasamos todos los valores que creamos a la página principal mediante el ListAdapter
         listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {

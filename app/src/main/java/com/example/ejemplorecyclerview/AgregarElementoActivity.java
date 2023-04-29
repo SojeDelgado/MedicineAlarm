@@ -77,24 +77,21 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
                 int hora = nombreTimePicker.getCurrentHour();
                 int minutos = nombreTimePicker.getCurrentMinute();
-                int horaYMinutos = hora * 100 + minutos;
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, hora);
-                calendar.set(Calendar.MINUTE, minutos);
-                calendar.set(Calendar.SECOND, 0);
-                Date horaToma = calendar.getTime();
+                Date horaDate = new Date();
+                horaDate.setHours(hora);
+                horaDate.setMinutes(minutos);
 
-                int id = (int) mDatabase.insertarMedicamento(nombre, horaToma);
+                int id = (int) mDatabase.insertarMedicamento(nombre, horaDate);
                 if (id == -1) {
                     Toast.makeText(AgregarElementoActivity.this, "No se pudo agregar el medicamento", Toast.LENGTH_SHORT).show();
                 } else {
-                    Medicamento medicamento = new Medicamento(nombre, horaToma);
+                    Medicamento medicamento = new Medicamento(nombre, horaDate);
                     mMedicamentos.add(medicamento);
                     mAdapter.notifyDataSetChanged();
 
                     // Configurar la alarma
-                    Utils.configurarAlarma(id, horaToma,AgregarElementoActivity.this);
+                    Utils.configurarAlarma(id, horaDate,AgregarElementoActivity.this);
 
                     Toast.makeText(AgregarElementoActivity.this, "Medicamento agregado correctamente", Toast.LENGTH_SHORT).show();
                 }
@@ -103,7 +100,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("nombre", nombre);
                 intent.putExtra("tipo", tipo);
-                intent.putExtra("hora",horaYMinutos);
+                intent.putExtra("hora",horaDate);
                 // Establecer el resultado y finalizar la actividad
                 setResult(RESULT_OK, intent);
 
