@@ -100,16 +100,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(listAdapter);
     }
 
-    public void init() {
+    public void init(){
         elements = new ArrayList<>();
-        elements.add(new ListElement("#000000", "Paracetamol", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Simvastatina ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Aspirina ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Omeprazol ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Lexotiroxina", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Ramipril ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Amlodipina ", "Pastilla", 2000));
-        elements.add(new ListElement("#000000", "Atorvastatina ", "Pastilla", 2000));
+        elements.add(new ListElement("#000000","Paracetamol","Pastilla",2000));
+        elements.add(new ListElement("#000000","Simvastatina ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Aspirina ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Omeprazol ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Lexotiroxina","Pastilla",2000));
+        elements.add(new ListElement("#000000","Ramipril ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Amlodipina ","Pastilla",2000));
+        elements.add(new ListElement("#000000","Atorvastatina ","Pastilla",2000));
 
         //Pasamos todos los valores que creamos a la página principal mediante el ListAdapter
         listAdapter = new ListAdapter(elements, this, new ListAdapter.OnItemClickListener() {

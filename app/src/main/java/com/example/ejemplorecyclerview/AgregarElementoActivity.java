@@ -6,6 +6,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +36,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
     private MedicamentosAdapter mAdapter;
     private ListElement element;
 
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class AgregarElementoActivity extends AppCompatActivity {
         mDatabase = new MedicamentosDatabase(this);
         mMedicamentos = mDatabase.obtenerMedicamentos();
         mAdapter = new MedicamentosAdapter(this, (ArrayList<Medicamento>) mMedicamentos);
+
+        mPrefs = getSharedPreferences("alarmas", MODE_PRIVATE);
 
         //Variable para asignar los valores de los EditTExt
         nombreTextview = findViewById(R.id.title_text_view);
@@ -102,6 +106,12 @@ public class AgregarElementoActivity extends AppCompatActivity {
                     Utils.configurarAlarma(id, horaToma,AgregarElementoActivity.this);
 
                     Toast.makeText(AgregarElementoActivity.this, "Medicamento agregado correctamente", Toast.LENGTH_SHORT).show();
+
+                    // Guardar el ID del medicamento en las preferencias compartidas
+                    SharedPreferences prefs = getSharedPreferences("medicamentos", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("ultimo_id", id);
+                    editor.apply();
                 }
 
                 //Intent para agregar los datos como extras
@@ -111,7 +121,6 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 intent.putExtra("hora",horaYMinutos);
                 // Establecer el resultado y finalizar la actividad
                 setResult(RESULT_OK, intent);
-
                 finish();
 
             }
