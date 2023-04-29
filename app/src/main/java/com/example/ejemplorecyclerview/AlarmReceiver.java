@@ -30,8 +30,24 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Crea un intent para abrir la actividad correspondiente cuando se toque la notificación
         Intent resultIntent = new Intent(context, NotificationService.class);
         resultIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
+        resultIntent.putExtra("id", id); // Agrega el ID de la notificación al Intent
+        resultIntent.putExtra("title", title); // Agrega el título de la notificación al Intent
+        resultIntent.putExtra("message", message);
         ContextCompat.startForegroundService(context, resultIntent );
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
-    }
 
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT |PendingIntent.FLAG_IMMUTABLE );
+        int notificationId = (int) (id % Integer.MAX_VALUE);
+        String nombreMedicamento = intent.getStringExtra(Medicamento.NOMBRE_MEDICAMENTO);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(nombreMedicamento)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(notificationId, builder.build());
+    }
 }

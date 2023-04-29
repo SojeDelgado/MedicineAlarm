@@ -82,6 +82,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
                 int hora = nombreTimePicker.getCurrentHour();
                 int minutos = nombreTimePicker.getCurrentMinute();
+                int horaYMinutos = hora * 100 + minutos;
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, hora);
@@ -98,7 +99,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
                     mAdapter.notifyDataSetChanged();
 
                     // Configurar la alarma
-                    configurarAlarma(id, horaToma);
+                    Utils.configurarAlarma(id, horaToma,AgregarElementoActivity.this);
 
                     Toast.makeText(AgregarElementoActivity.this, "Medicamento agregado correctamente", Toast.LENGTH_SHORT).show();
                 }
@@ -107,7 +108,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("nombre", nombre);
                 intent.putExtra("tipo", tipo);
-                intent.putExtra("hora",hora);
+                intent.putExtra("hora",horaYMinutos);
                 // Establecer el resultado y finalizar la actividad
                 setResult(RESULT_OK, intent);
 
@@ -116,26 +117,6 @@ public class AgregarElementoActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void configurarAlarma(long id,Date horaToma) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(horaToma);
-
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.putExtra("id", id);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -145,3 +126,4 @@ public class AgregarElementoActivity extends AppCompatActivity {
         finish();
     }
 }
+

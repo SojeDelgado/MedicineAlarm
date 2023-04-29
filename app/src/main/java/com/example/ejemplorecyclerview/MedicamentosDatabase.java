@@ -52,6 +52,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         return id;
     }
 
+
     public List<Medicamento> obtenerMedicamentos() {
         SQLiteDatabase db = getReadableDatabase();
 
