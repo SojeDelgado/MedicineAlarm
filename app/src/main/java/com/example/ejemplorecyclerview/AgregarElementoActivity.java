@@ -2,12 +2,7 @@ package com.example.ejemplorecyclerview;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,7 +14,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,16 +28,15 @@ public class AgregarElementoActivity extends AppCompatActivity {
     private MedicamentosDatabase mDatabase;
     private List<Medicamento> mMedicamentos;
     private MedicamentosAdapter mAdapter;
-    private ListElement element;
+    private MedicamentoElement element;
 
-    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_elemento);
 
-        element = (ListElement) getIntent().getSerializableExtra("ListElement");
+        element = (MedicamentoElement) getIntent().getSerializableExtra("ListElement");
 
         String[] tipoMedicamentos = {
                 "Analgesicos",
@@ -56,8 +49,6 @@ public class AgregarElementoActivity extends AppCompatActivity {
         mDatabase = new MedicamentosDatabase(this);
         mMedicamentos = mDatabase.obtenerMedicamentos();
         mAdapter = new MedicamentosAdapter(this, (ArrayList<Medicamento>) mMedicamentos);
-
-        mPrefs = getSharedPreferences("alarmas", MODE_PRIVATE);
 
         //Variable para asignar los valores de los EditTExt
         nombreTextview = findViewById(R.id.title_text_view);
@@ -86,41 +77,33 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
                 int hora = nombreTimePicker.getCurrentHour();
                 int minutos = nombreTimePicker.getCurrentMinute();
-                int horaYMinutos = hora * 100 + minutos;
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, hora);
-                calendar.set(Calendar.MINUTE, minutos);
-                calendar.set(Calendar.SECOND, 0);
-                Date horaToma = calendar.getTime();
+                Date horaDate = new Date();
+                horaDate.setHours(hora);
+                horaDate.setMinutes(minutos);
 
-                int id = (int) mDatabase.insertarMedicamento(nombre, horaToma);
+                int id = (int) mDatabase.insertarMedicamento(nombre, horaDate);
                 if (id == -1) {
                     Toast.makeText(AgregarElementoActivity.this, "No se pudo agregar el medicamento", Toast.LENGTH_SHORT).show();
                 } else {
-                    Medicamento medicamento = new Medicamento(nombre, horaToma);
+                    Medicamento medicamento = new Medicamento(nombre, horaDate);
                     mMedicamentos.add(medicamento);
                     mAdapter.notifyDataSetChanged();
 
                     // Configurar la alarma
-                    Utils.configurarAlarma(id, horaToma,AgregarElementoActivity.this);
+                    Utils.configurarAlarma(id, horaDate,AgregarElementoActivity.this);
 
                     Toast.makeText(AgregarElementoActivity.this, "Medicamento agregado correctamente", Toast.LENGTH_SHORT).show();
-
-                    // Guardar el ID del medicamento en las preferencias compartidas
-                    SharedPreferences prefs = getSharedPreferences("medicamentos", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("ultimo_id", id);
-                    editor.apply();
                 }
 
                 //Intent para agregar los datos como extras
                 Intent intent = new Intent();
                 intent.putExtra("nombre", nombre);
                 intent.putExtra("tipo", tipo);
-                intent.putExtra("hora",horaYMinutos);
+                intent.putExtra("hora",horaDate);
                 // Establecer el resultado y finalizar la actividad
                 setResult(RESULT_OK, intent);
+
                 finish();
 
             }

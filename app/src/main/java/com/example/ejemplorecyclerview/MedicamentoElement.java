@@ -1,19 +1,20 @@
 package com.example.ejemplorecyclerview;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class ListElement implements Serializable {
+public class MedicamentoElement implements Serializable {
     public String color;
     public String nombre;
     public String medicamento;
-    public int hora;
+    public Date hora;
     public boolean onOff;
 
-    public ListElement(String color, String nombre, String medicamento, int hora) {
+    public MedicamentoElement(String color, String nombre, String medicamento, Date hora) {
         this.color = color;
         this.nombre = nombre;
         this.medicamento = medicamento;
-        this.hora = Integer.parseInt(String.valueOf(hora));
+        this.hora = hora;
         onOff = false;
     }
 
@@ -41,11 +42,11 @@ public class ListElement implements Serializable {
         this.medicamento = medicamento;
     }
 
-    public int getHora() {
+    public Date getHora() {
         return hora;
     }
 
-    public void setHora(int hora) {
+    public void setHora(Date hora) {
         this.hora = hora;
     }
 

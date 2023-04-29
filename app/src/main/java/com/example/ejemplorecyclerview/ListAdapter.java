@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,7 +23,7 @@ import java.util.Locale;
 
 //Clase que nos servirá de puente para el list_element.xml (Para que se muestren los datos en el menú principal)
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-    private List<ListElement> mData;
+    private List<MedicamentoElement> mData;
     private LayoutInflater mInflater;
     private Context context;
 
@@ -34,14 +33,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     final ListAdapter.OnItemLongClickListener longClickListener;
 
     public interface OnItemClickListener{
-        void onItemClick(ListElement item);
+        void onItemClick(MedicamentoElement item);
     }
 
     public interface OnItemLongClickListener {
-        void onItemLongClick(ListElement item);
+        void onItemLongClick(MedicamentoElement item);
     }
 
-    public ListAdapter(List<ListElement> itemList, Context context, ListAdapter.OnItemClickListener listener, ListAdapter.OnItemLongClickListener longClickListener){
+    public ListAdapter(List<MedicamentoElement> itemList, Context context, ListAdapter.OnItemClickListener listener, ListAdapter.OnItemLongClickListener longClickListener){
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.mData = itemList;
@@ -62,7 +61,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.cv.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_trancition));
         //holder.bindData(mData.get(position));
 
-        final ListElement item = mData.get(position);
+        final MedicamentoElement item = mData.get(position);
         holder.bindData(item);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +78,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         });
     }
 
-    public void setItems(List<ListElement> items){ mData = items; }
+    public void setItems(List<MedicamentoElement> items){ mData = items; }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;
@@ -105,32 +104,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         }
 
-        void bindData(final ListElement item){
+        void bindData(final MedicamentoElement item){
             iconImage.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.SRC_IN);
             nombre.setText(item.getNombre());
             medicamento.setText(item.getMedicamento());
 
-            int hora2 = item.getHora();
-            int minutos = hora2%100;
-            hora2 = hora2 / 100;
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, hora2);
-            calendar.set(Calendar.MINUTE, minutos);
-            calendar.set(Calendar.SECOND, 0);
-            Date date = calendar.getTime();
+            Date hora = item.getHora();
             DateFormat dateFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-            String horaFormateada = dateFormat.format(date);
+            String horaFormateada = dateFormat.format(hora);
 
-            hora.setText(horaFormateada);
+            this.hora.setText(horaFormateada);
             if (onOff != null) {
                 onOff.setChecked(item.isOnOff());
             }
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClick(item);
-                }
-            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
