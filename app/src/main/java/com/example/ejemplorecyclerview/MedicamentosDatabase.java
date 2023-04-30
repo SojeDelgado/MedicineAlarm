@@ -52,10 +52,23 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         values.put(MedicamentosEntry.COLUMN_HORA_TOMA, horaToma.getTime());
         values.put(MedicamentosEntry.COLUMN_ON_OFF, onoff);
 
+        values.put(MedicamentosEntry._ID, getNextId());
+
         long id = db.insert(MedicamentosEntry.TABLE_NAME, null, values);
         db.close();
 
         return id;
+    }
+    public int getNextId() {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT MAX(" + MedicamentosEntry._ID + ") FROM " + MedicamentosEntry.TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        int maxId = 0;
+        if (cursor.moveToFirst()) {
+            maxId = cursor.getInt(0);
+        }
+        cursor.close();
+        return maxId + 1;
     }
 
 
@@ -84,7 +97,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
 
         List<MedicamentoElement> medicamentos = new ArrayList<>();
         while (cursor.moveToNext()) {
-            long id = cursor.getLong(cursor.getColumnIndex(MedicamentosEntry._ID));
+            int id = (int) cursor.getLong(cursor.getColumnIndex(MedicamentosEntry._ID));
             String color = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_COLOR));
             String nombre = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_NOMBRE));
             String medicamento = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_MEDICAMENTO));
@@ -93,7 +106,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
 
             Date hora = new Date(horaTomaMillis);
 
-            MedicamentoElement medi = new MedicamentoElement(color,nombre, medicamento, hora, onOff);
+            MedicamentoElement medi = new MedicamentoElement(id,color,nombre, medicamento, hora, onOff);
             medicamentos.add(medi);
         }
 
@@ -102,16 +115,30 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
 
         return medicamentos;
     }
-
-    public long eliminarMedicamento(MedicamentoElement id) {
-        SQLiteDatabase db = getWritableDatabase();
-        long eliminados = db.delete(MedicamentosEntry.TABLE_NAME, MedicamentosEntry._ID + "=?", new String[] { String.valueOf(id) });
+    public void actualizarMedicamento(int id, String color, String nombre, String medicamento, Date hora, boolean activo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MedicamentosEntry.COLUMN_COLOR, color);
+        values.put(MedicamentosEntry.COLUMN_NOMBRE, nombre);
+        values.put(MedicamentosEntry.COLUMN_MEDICAMENTO, medicamento);
+        values.put(MedicamentosEntry.COLUMN_HORA_TOMA, hora.getTime());
+        values.put(MedicamentosEntry.COLUMN_ON_OFF, activo ? 1 : 0);
+        db.update("medicamentos", values, "_id = ?", new String[]{Integer.toString(id)});
         db.close();
-        return eliminados;
     }
+
+
+    public void eliminarMedicamento(MedicamentoElement medicamento) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("medicamentos", "_id = ?", new String[] { Integer.toString(medicamento.getId()) });
+        Log.d(TAG, "Medicamento eliminado: " + medicamento.getNombre());
+        db.close();
+    }
+
 
     public static class MedicamentosEntry implements BaseColumns {
         public static final String TABLE_NAME = "medicamentos";
+        public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_COLOR = "color";
         public static final String COLUMN_NOMBRE = "nombre";
         public static final String COLUMN_MEDICAMENTO = "medicamento";

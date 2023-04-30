@@ -73,7 +73,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Obtener los datos ingresados de los EditText
-                String color = nombreEditText.getText().toString();
+                String color = "#000000";
                 String nombre = nombreEditText.getText().toString();
                 String medicamento = (String) tipoMedicamentoSpinner.getSelectedItem();
 
@@ -90,7 +90,7 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 if (id == -1) {
                     Toast.makeText(AgregarElementoActivity.this, "No se pudo agregar el medicamento", Toast.LENGTH_SHORT).show();
                 } else {
-                    MedicamentoElement medi = new MedicamentoElement(color,nombre,medicamento,horaDate,true);
+                    MedicamentoElement medi = new MedicamentoElement(id,color,nombre,medicamento,horaDate,true);
                     mMedicamentos.add(medi);
                     mAdapter.notifyDataSetChanged();
 
