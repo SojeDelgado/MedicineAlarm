@@ -12,18 +12,18 @@ import static android.content.Context.ALARM_SERVICE;
 
 public class Utils {
     public static void configurarAlarma(long id, Date horaToma, Context ctx) {
-
-
         AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(ctx, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         intent.putExtra("id", id);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.setTime(horaToma);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+        // Establecer la alarma con una repetición exacta y un intervalo de 24 horas
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
+
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
