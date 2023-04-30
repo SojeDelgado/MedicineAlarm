@@ -85,7 +85,6 @@ public class DescriptionActivity extends AppCompatActivity {
                 calendar.set(Calendar.MINUTE, minutos);
                 calendar.set(Calendar.SECOND, 0);
 
-                Log.d(TAG, "ID del elemento a actualizar: " + id);
                 MedicamentoElement updatedElement = new MedicamentoElement(
                         id,
                         element.getColor(),

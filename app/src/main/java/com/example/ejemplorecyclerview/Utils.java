@@ -21,8 +21,7 @@ public class Utils {
         calendar.setTime(horaToma);
 
         // Establecer la alarma con una repetición exacta y un intervalo de 24 horas
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
