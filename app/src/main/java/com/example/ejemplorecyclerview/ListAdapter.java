@@ -47,8 +47,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         this.listener = listener;
         this.longClickListener = longClickListener;
     }
+
     @Override
     public int getItemCount(){ return mData.size(); }
+
+    public void updateList(List<MedicamentoElement> newList){
+        mData.clear(); //Limpiamos la lista actual
+        mData.addAll(newList); //Añadimos los nuevos elementos
+        notifyDataSetChanged(); //Notificamos al adaptador que los datos han cambiado
+    }
 
     @Override
     public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -85,6 +92,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         TextView nombre, medicamento, hora;
         CardView cv;
         Switch onOff;
+        int id;
 
         ViewHolder(View itemView){
             super(itemView);
@@ -105,7 +113,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
 
         void bindData(final MedicamentoElement item){
-            iconImage.setColorFilter(Color.parseColor(item.getColor()), PorterDuff.Mode.SRC_IN);
+            iconImage.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
             nombre.setText(item.getNombre());
             medicamento.setText(item.getMedicamento());
 
@@ -123,6 +131,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                     listener.onItemClick(item);
                 }
             });
+            id = item.getId();
         }
     }
 }

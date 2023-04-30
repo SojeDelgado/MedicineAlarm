@@ -4,20 +4,28 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class MedicamentoElement implements Serializable {
+    public int id;
     public String color;
     public String nombre;
     public String medicamento;
     public Date hora;
     public boolean onOff;
 
-    public MedicamentoElement(String color, String nombre, String medicamento, Date hora, Boolean onOff) {
+    public MedicamentoElement(int id, String color, String nombre, String medicamento, Date hora, Boolean onOff) {
+        this.id = id;
         this.color = color;
         this.nombre = nombre;
         this.medicamento = medicamento;
         this.hora = hora;
         this.onOff = onOff;
     }
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getColor() {
         return color;
     }
