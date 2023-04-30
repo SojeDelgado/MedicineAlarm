@@ -86,11 +86,11 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 calendar.set(Calendar.MILLISECOND, 0);
                 Date horaDate = calendar.getTime();
 
-                int id = (int) mDatabase.insertarMedicamento(color,nombre,medicamento, horaDate,true);
+                int id = (int) mDatabase.insertarMedicamento(color,nombre,medicamento, horaDate);
                 if (id == -1) {
                     Toast.makeText(AgregarElementoActivity.this, "No se pudo agregar el medicamento", Toast.LENGTH_SHORT).show();
                 } else {
-                    MedicamentoElement medi = new MedicamentoElement(color,nombre,medicamento,horaDate,true);
+                    MedicamentoElement medi = new MedicamentoElement(color,nombre,medicamento,horaDate);
                     mMedicamentos.add(medi);
                     mAdapter.notifyDataSetChanged();
 

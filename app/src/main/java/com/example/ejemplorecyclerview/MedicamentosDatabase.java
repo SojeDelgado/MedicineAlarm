@@ -103,7 +103,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         return medicamentos;
     }
 
-    public long eliminarMedicamento(MedicamentoElement id) {
+    public long eliminarMedicamento(long id) {
         SQLiteDatabase db = getWritableDatabase();
         long eliminados = db.delete(MedicamentosEntry.TABLE_NAME, MedicamentosEntry._ID + "=?", new String[] { String.valueOf(id) });
         db.close();
