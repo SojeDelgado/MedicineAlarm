@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void moveToDescription(MedicamentoElement element){
         Intent intent = new Intent(MainActivity.this, DescriptionActivity.class);
+        intent.putExtra("id", element.getId());
         intent.putExtra("ListElement", element);
         int position = elements.indexOf(element);
         intent.putExtra("position", position);

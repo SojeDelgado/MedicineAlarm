@@ -116,6 +116,8 @@ public class DescriptionActivity extends AppCompatActivity {
                 intent.putExtra("position", getIntent().getIntExtra("position", -1));
                 intent.putExtra("ListElement", updatedElement);
                 setResult(RESULT_OK, intent);
+
+                Utils.configurarAlarma(id, horaDate,DescriptionActivity.this);
                 finish();
             }
         });

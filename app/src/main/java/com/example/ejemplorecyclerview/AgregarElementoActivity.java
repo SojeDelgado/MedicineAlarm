@@ -108,7 +108,10 @@ public class AgregarElementoActivity extends AppCompatActivity {
                 // Establecer el resultado y finalizar la actividad
                 setResult(RESULT_OK, intent);
 
+
                 finish();
+
+
 
             }
         });
