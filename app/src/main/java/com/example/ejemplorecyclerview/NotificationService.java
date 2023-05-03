@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -19,6 +20,8 @@ public class NotificationService extends IntentService {
     private NotificationManager notificationManager;
     private PendingIntent pendingIntent;
     Notification notification;
+
+    // Crear una instancia de la clase Medicamento
     private static final int NOTIFICATION_ID_BASE = 1000; // ID base para las notificaciones
     private static int notificationId = NOTIFICATION_ID_BASE;
 
@@ -42,7 +45,25 @@ public class NotificationService extends IntentService {
         Resources res = this.getResources();
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
-        String message = getString(R.string.new_notification);
+        int medicamentoId = intent2.getIntExtra("medicamento_id", -1);
+
+        // Realizar la consulta de contenido para obtener la información del medicamento
+        Cursor cursor = getContentResolver().query(Uri.parse(MedicamentosDatabase.MedicamentosEntry.COLUMN_NOMBRE), null,
+                MedicamentosDatabase.MedicamentosEntry._ID + " = ?", new String[] { String.valueOf(medicamentoId) }, null);
+
+        // Mover el cursor al primer registro (el único en este caso) y obtener la información del medicamento
+        String medicamentoNombre = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            medicamentoNombre = cursor.getString(cursor.getColumnIndex(MedicamentosDatabase.MedicamentosEntry.COLUMN_NOMBRE));
+        }
+
+        // Cerrar el cursor
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        String nombre = medicamentoNombre;
+        String message = getString(R.string.new_notification, nombre);
 
         int NOTIFY_ID = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

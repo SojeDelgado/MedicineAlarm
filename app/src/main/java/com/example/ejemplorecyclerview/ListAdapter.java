@@ -1,12 +1,14 @@
 package com.example.ejemplorecyclerview;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -27,6 +29,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private LayoutInflater mInflater;
     private Context context;
 
+    private SharedPreferences mSharedPreferences;
+
     //Con esto podremos clickear el RecyclerView
     final ListAdapter.OnItemClickListener listener;
 
@@ -46,6 +50,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         this.mData = itemList;
         this.listener = listener;
         this.longClickListener = longClickListener;
+        this.mSharedPreferences = context.getSharedPreferences("myprefs", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -83,6 +88,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 return true;
             }
         });
+
+        if (holder.onOff != null) {
+            holder.onOff.setChecked(item.isOnOff());
+        }
+        //holder.onOff.setChecked(item.isOnOff()); // Establece el estado del Switch
+        Switch switchview = holder.onOff;
+        if(switchview != null) {
+            switchview.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    item.setOnOff(isChecked); // Actualiza el estado del switch en el objeto MedicamentoElement
+                }
+            });
+        }
     }
 
     public void setItems(List<MedicamentoElement> items){ mData = items; }

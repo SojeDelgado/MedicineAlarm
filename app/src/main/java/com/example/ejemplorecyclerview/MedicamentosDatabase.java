@@ -1,5 +1,9 @@
 package com.example.ejemplorecyclerview;
 
+import static com.example.ejemplorecyclerview.MedicamentosDatabase.MedicamentosEntry.COLUMN_NOMBRE;
+import static com.example.ejemplorecyclerview.MedicamentosDatabase.MedicamentosEntry.TABLE_NAME;
+import static com.example.ejemplorecyclerview.MedicamentosDatabase.MedicamentosEntry._ID;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -26,7 +30,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         String SQL_CREATE_MEDICAMENTOS_TABLE = "CREATE TABLE " + MedicamentosEntry.TABLE_NAME + " ("
                 + MedicamentosEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MedicamentosEntry.COLUMN_COLOR + " VARCHAR2(7) NOT NULL, "
-                + MedicamentosEntry.COLUMN_NOMBRE + " TEXT NOT NULL, "
+                + COLUMN_NOMBRE + " TEXT NOT NULL, "
                 + MedicamentosEntry.COLUMN_MEDICAMENTO + " TEXT NOT NULL, "
                 + MedicamentosEntry.COLUMN_HORA_TOMA + " INTEGER NOT NULL,"
                 + MedicamentosEntry.COLUMN_ON_OFF + " BOOLEAN NOT NULL);";
@@ -47,7 +51,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(MedicamentosEntry.COLUMN_COLOR, color);
-        values.put(MedicamentosEntry.COLUMN_NOMBRE, nombre);
+        values.put(COLUMN_NOMBRE, nombre);
         values.put(MedicamentosEntry.COLUMN_MEDICAMENTO, medicamento);
         values.put(MedicamentosEntry.COLUMN_HORA_TOMA, horaToma.getTime());
         values.put(MedicamentosEntry.COLUMN_ON_OFF, onoff);
@@ -78,7 +82,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         String[] projection = {
                 MedicamentosEntry._ID,
                 MedicamentosEntry.COLUMN_COLOR,
-                MedicamentosEntry.COLUMN_NOMBRE,
+                COLUMN_NOMBRE,
                 MedicamentosEntry.COLUMN_MEDICAMENTO,
                 MedicamentosEntry.COLUMN_HORA_TOMA,
                 MedicamentosEntry.COLUMN_ON_OFF
@@ -99,7 +103,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             int id = (int) cursor.getLong(cursor.getColumnIndex(MedicamentosEntry._ID));
             String color = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_COLOR));
-            String nombre = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_NOMBRE));
+            String nombre = cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE));
             String medicamento = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_MEDICAMENTO));
             long horaTomaMillis = cursor.getLong(cursor.getColumnIndex(MedicamentosEntry.COLUMN_HORA_TOMA));
             boolean onOff = (cursor.getInt(cursor.getColumnIndex(MedicamentosEntry.COLUMN_ON_OFF)) != 0);
@@ -119,7 +123,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(MedicamentosEntry.COLUMN_COLOR, color);
-        values.put(MedicamentosEntry.COLUMN_NOMBRE, nombre);
+        values.put(COLUMN_NOMBRE, nombre);
         values.put(MedicamentosEntry.COLUMN_MEDICAMENTO, medicamento);
         values.put(MedicamentosEntry.COLUMN_HORA_TOMA, hora.getTime());
         values.put(MedicamentosEntry.COLUMN_ON_OFF, activo ? 1 : 0);
@@ -134,6 +138,22 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         Log.d(TAG, "Medicamento eliminado: " + medicamento.getNombre());
         db.close();
     }
+
+    public String getMedicineName(int alarmId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_NOMBRE};
+        String selection = _ID + "=?";
+        String[] selectionArgs = {String.valueOf(alarmId)};
+        Cursor cursor = db.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        String medicineName = null;
+        if (cursor.moveToFirst()) {
+            medicineName = cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE));
+        }
+        cursor.close();
+        Log.d("MyDatabaseHelper", "getMedicineName: " + medicineName);
+        return medicineName;
+    }
+
 
 
     public static class MedicamentosEntry implements BaseColumns {

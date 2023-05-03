@@ -19,6 +19,7 @@ public class MedicamentoElement implements Serializable {
         this.hora = hora;
         this.onOff = onOff;
     }
+
     public int getId() {
         return id;
     }

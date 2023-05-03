@@ -1,9 +1,8 @@
 <resources>
-    <string name="app_name">EjemploRecyclerView</string>
+    <string name="app_name">Medical Assistant</string>
     <string name="alarma">Alarma</string>
     <string name="tipo">Tipo</string>
     <string name="default_notification_channel_id">Id_de_canal</string>
     <string name="channel_name">Nombre_del_Canal</string>
     <string name="channel_description">Descripción_del_Canal</string>
-    <string name="new_notification">Nueva notificación</string>
-</resources>
+    <string name="new_notification">Nueva notificación</string></resources>
