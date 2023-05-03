@@ -82,6 +82,18 @@
                 android:layout_marginRight="6dp"
                 />
 
+            <TextView
+                android:id="@+id/cantidadTextView"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/linearLayout"
+                android:layout_gravity="end"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@+id/linearLayout"
+                android:text="2 gr"
+                android:textSize="15sp" />
+
         </RelativeLayout>
 
     </LinearLayout>

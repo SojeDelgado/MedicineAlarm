@@ -7,17 +7,27 @@ public class MedicamentoElement implements Serializable {
     public int id;
     public String color;
     public String nombre;
+    public float cantidad;
     public String medicamento;
     public Date hora;
     public boolean onOff;
 
-    public MedicamentoElement(int id, String color, String nombre, String medicamento, Date hora, Boolean onOff) {
+    public MedicamentoElement(int id, String color, String nombre, float cantidad, String medicamento, Date hora, Boolean onOff) {
         this.id = id;
         this.color = color;
         this.nombre = nombre;
+        this.cantidad = cantidad;
         this.medicamento = medicamento;
         this.hora = hora;
         this.onOff = onOff;
+    }
+
+    public float getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(float cantidad) {
+        this.cantidad = cantidad;
     }
 
     public int getId() {

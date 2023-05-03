@@ -115,7 +115,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;
-        TextView nombre, medicamento, hora;
+        TextView nombre, medicamento, hora, cantidad;
         CardView cv;
         Switch onOff;
         int id;
@@ -124,6 +124,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             super(itemView);
             iconImage = itemView.findViewById(R.id.iconImageView);
             nombre = itemView.findViewById(R.id.nombreTextView);
+            cantidad = itemView.findViewById(R.id.cantidadTextView);
             medicamento = itemView.findViewById(R.id.medicamentoTextView);
             hora = itemView.findViewById(R.id.horaTextView);
             cv = itemView.findViewById(R.id.cv);
@@ -142,6 +143,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         void bindData(final MedicamentoElement item){
             iconImage.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
             nombre.setText(item.getNombre());
+            cantidad.setText(String.valueOf(item.getCantidad()) + " gr");
+            item.setCantidad(0);
             medicamento.setText(item.getMedicamento());
 
             Date hora = item.getHora();

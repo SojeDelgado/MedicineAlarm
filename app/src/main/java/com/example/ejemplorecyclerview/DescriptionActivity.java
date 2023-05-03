@@ -24,6 +24,7 @@ import java.util.List;
 
 public class DescriptionActivity extends AppCompatActivity {
     EditText nombreEditText;
+    EditText cantidadEditText;
     Spinner tipoMedicamentoSpinner;
     TimePicker nombreTimePicker;
     private MedicamentosDatabase mDatabase;
@@ -53,10 +54,12 @@ public class DescriptionActivity extends AppCompatActivity {
         };
 
         nombreEditText = findViewById(R.id.nombreDescriptionTextView);
+        cantidadEditText = findViewById(R.id.editTextCantidad);
         tipoMedicamentoSpinner = findViewById(R.id.spinnerTipoMedicamento);
         nombreTimePicker = findViewById(R.id.time_picker_hora_toma);
 
         nombreEditText.setText(element.getNombre());
+        cantidadEditText.setText(""+element.getCantidad());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoMedicamentos);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -73,6 +76,13 @@ public class DescriptionActivity extends AppCompatActivity {
                 int id = getIntent().getIntExtra("id",-1);
                 //Obtener los datos ingresados de los EditText
                 String nombre = nombreEditText.getText().toString();
+                String cantidadString = cantidadEditText.getText().toString();
+                float cantidad;
+                if (cantidadString.equals("")) {
+                    cantidad = 0;
+                }else{
+                    cantidad = Float.parseFloat(cantidadString);
+                }
                 String tipo = (String) tipoMedicamentoSpinner.getSelectedItem();
                 int hora = nombreTimePicker.getCurrentHour();
                 int minutos = nombreTimePicker.getCurrentMinute();
@@ -89,6 +99,7 @@ public class DescriptionActivity extends AppCompatActivity {
                         id,
                         element.getColor(),
                         nombre,
+                        cantidad,
                         tipo,
                         horaDate,
                         true
@@ -103,6 +114,7 @@ public class DescriptionActivity extends AppCompatActivity {
                         id,
                         "#000000",
                         nombre,
+                        cantidad,
                         tipo,
                         horaDate,
                         true

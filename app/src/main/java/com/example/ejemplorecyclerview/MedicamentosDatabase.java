@@ -1,5 +1,6 @@
 package com.example.ejemplorecyclerview;
 
+import static com.example.ejemplorecyclerview.MedicamentosDatabase.MedicamentosEntry.COLUMN_CANTIDAD;
 import static com.example.ejemplorecyclerview.MedicamentosDatabase.MedicamentosEntry.COLUMN_NOMBRE;
 import static com.example.ejemplorecyclerview.MedicamentosDatabase.MedicamentosEntry.TABLE_NAME;
 import static com.example.ejemplorecyclerview.MedicamentosDatabase.MedicamentosEntry._ID;
@@ -31,6 +32,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
                 + MedicamentosEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MedicamentosEntry.COLUMN_COLOR + " VARCHAR2(7) NOT NULL, "
                 + COLUMN_NOMBRE + " TEXT NOT NULL, "
+                + MedicamentosEntry.COLUMN_CANTIDAD + " REAL NOT NULL, "
                 + MedicamentosEntry.COLUMN_MEDICAMENTO + " TEXT NOT NULL, "
                 + MedicamentosEntry.COLUMN_HORA_TOMA + " INTEGER NOT NULL,"
                 + MedicamentosEntry.COLUMN_ON_OFF + " BOOLEAN NOT NULL);";
@@ -46,12 +48,13 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertarMedicamento(String color, String nombre, String medicamento, Date horaToma, Boolean onoff) {
+    public long insertarMedicamento(String color, String nombre, float cantidad,String medicamento, Date horaToma, Boolean onoff) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(MedicamentosEntry.COLUMN_COLOR, color);
         values.put(COLUMN_NOMBRE, nombre);
+        values.put(MedicamentosEntry.COLUMN_CANTIDAD, cantidad);
         values.put(MedicamentosEntry.COLUMN_MEDICAMENTO, medicamento);
         values.put(MedicamentosEntry.COLUMN_HORA_TOMA, horaToma.getTime());
         values.put(MedicamentosEntry.COLUMN_ON_OFF, onoff);
@@ -83,6 +86,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
                 MedicamentosEntry._ID,
                 MedicamentosEntry.COLUMN_COLOR,
                 COLUMN_NOMBRE,
+                MedicamentosEntry.COLUMN_CANTIDAD,
                 MedicamentosEntry.COLUMN_MEDICAMENTO,
                 MedicamentosEntry.COLUMN_HORA_TOMA,
                 MedicamentosEntry.COLUMN_ON_OFF
@@ -104,13 +108,14 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
             int id = (int) cursor.getLong(cursor.getColumnIndex(MedicamentosEntry._ID));
             String color = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_COLOR));
             String nombre = cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE));
+            float cantidad = cursor.getFloat(cursor.getColumnIndex(MedicamentosEntry.COLUMN_CANTIDAD));
             String medicamento = cursor.getString(cursor.getColumnIndex(MedicamentosEntry.COLUMN_MEDICAMENTO));
             long horaTomaMillis = cursor.getLong(cursor.getColumnIndex(MedicamentosEntry.COLUMN_HORA_TOMA));
             boolean onOff = (cursor.getInt(cursor.getColumnIndex(MedicamentosEntry.COLUMN_ON_OFF)) != 0);
 
             Date hora = new Date(horaTomaMillis);
 
-            MedicamentoElement medi = new MedicamentoElement(id,color,nombre, medicamento, hora, onOff);
+            MedicamentoElement medi = new MedicamentoElement(id,color,nombre, cantidad,medicamento, hora, onOff);
             medicamentos.add(medi);
         }
 
@@ -119,11 +124,12 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
 
         return medicamentos;
     }
-    public void actualizarMedicamento(int id, String color, String nombre, String medicamento, Date hora, boolean activo) {
+    public void actualizarMedicamento(int id, String color, String nombre, float cantidad,String medicamento, Date hora, boolean activo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(MedicamentosEntry.COLUMN_COLOR, color);
         values.put(COLUMN_NOMBRE, nombre);
+        values.put(MedicamentosEntry.COLUMN_CANTIDAD, cantidad);
         values.put(MedicamentosEntry.COLUMN_MEDICAMENTO, medicamento);
         values.put(MedicamentosEntry.COLUMN_HORA_TOMA, hora.getTime());
         values.put(MedicamentosEntry.COLUMN_ON_OFF, activo ? 1 : 0);
@@ -161,6 +167,7 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_COLOR = "color";
         public static final String COLUMN_NOMBRE = "nombre";
+        public static final String COLUMN_CANTIDAD = "cantidad";
         public static final String COLUMN_MEDICAMENTO = "medicamento";
         public static final String COLUMN_HORA_TOMA = "hora_toma";
         public static final String COLUMN_ON_OFF = "onoff";
