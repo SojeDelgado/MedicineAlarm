@@ -89,8 +89,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             }
         });
 
-        if (holder.onOff != null) {
+        /*if (holder.onOff != null) {
             holder.onOff.setChecked(item.isOnOff());
+        }*/
+        if (holder.onOff != null) {
+            boolean switchState = mSharedPreferences.getBoolean("switch_state_" + item.getId(), false);
+            holder.onOff.setChecked(switchState);
         }
         //holder.onOff.setChecked(item.isOnOff()); // Establece el estado del Switch
         Switch switchview = holder.onOff;
@@ -99,6 +103,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     item.setOnOff(isChecked); // Actualiza el estado del switch en el objeto MedicamentoElement
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putBoolean("switch_state_" + item.getId(), isChecked);
+                    editor.apply();
                 }
             });
         }
@@ -120,6 +127,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             medicamento = itemView.findViewById(R.id.medicamentoTextView);
             hora = itemView.findViewById(R.id.horaTextView);
             cv = itemView.findViewById(R.id.cv);
+            onOff = itemView.findViewById(R.id.onOffSwitch);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -144,6 +152,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             if (onOff != null) {
                 onOff.setChecked(item.isOnOff());
             }
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
