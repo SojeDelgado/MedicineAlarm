@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -23,7 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @SuppressLint("MissingPermission")
     public void onReceive(Context context, Intent intent) {
         // Extrae los datos de la alarma que se guardaron en el Intent
-        long id = intent.getLongExtra("id", 0);
+        long id = intent.getLongExtra("id", -1);
         String title = intent.getStringExtra("title");
         String message = intent.getStringExtra("message");
 
@@ -31,6 +32,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Intent resultIntent = new Intent(context, NotificationService.class);
         resultIntent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
         resultIntent.putExtra("id", id); // Agrega el ID de la notificación al Intent
+        Log.d("ID del medicamento en AlarmReceiver ", String.valueOf(id));
         resultIntent.putExtra("title", title); // Agrega el título de la notificación al Intent
         resultIntent.putExtra("message", message);
         ContextCompat.startForegroundService(context, resultIntent );

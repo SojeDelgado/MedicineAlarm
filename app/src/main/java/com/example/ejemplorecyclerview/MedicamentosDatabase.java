@@ -145,19 +145,66 @@ public class MedicamentosDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public String getMedicineName(int alarmId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {COLUMN_NOMBRE};
-        String selection = _ID + "=?";
-        String[] selectionArgs = {String.valueOf(alarmId)};
-        Cursor cursor = db.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
-        String medicineName = null;
+    public String obtenerNombreMedicamento(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] projection = {
+                COLUMN_NOMBRE
+        };
+
+        String selection = MedicamentosEntry._ID + " = ?";
+        String[] selectionArgs = { Integer.toString(id) };
+
+        Cursor cursor = db.query(
+                MedicamentosEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        String nombre = null;
         if (cursor.moveToFirst()) {
-            medicineName = cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE));
+            nombre = cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE));
         }
+
         cursor.close();
-        Log.d("MyDatabaseHelper", "getMedicineName: " + medicineName);
-        return medicineName;
+        db.close();
+
+        return nombre;
+    }
+
+    public String obtenerCantidadMedicamento(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String[] projection = {
+                COLUMN_CANTIDAD
+        };
+
+        String selection = MedicamentosEntry._ID + " = ?";
+        String[] selectionArgs = { Integer.toString(id) };
+
+        Cursor cursor = db.query(
+                MedicamentosEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        String cantidad = null;
+        if (cursor.moveToFirst()) {
+            cantidad = cursor.getString(cursor.getColumnIndex(COLUMN_CANTIDAD));
+        }
+
+        cursor.close();
+        db.close();
+
+        return cantidad;
     }
 
 

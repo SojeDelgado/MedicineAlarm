@@ -1,5 +1,6 @@
 package com.example.ejemplorecyclerview;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.app.Notification;
@@ -14,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 public class NotificationService extends IntentService {
@@ -35,6 +37,7 @@ public class NotificationService extends IntentService {
         super("SERVICE");
     }
 
+    @SuppressLint("Range")
     @TargetApi(Build.VERSION_CODES.O)
     @Override
     protected void onHandleIntent(Intent intent2) {
@@ -45,25 +48,26 @@ public class NotificationService extends IntentService {
         Resources res = this.getResources();
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
-        int medicamentoId = intent2.getIntExtra("medicamento_id", -1);
+        int medicamentoId = (int) intent2.getLongExtra("id", -1);
+        Log.d("ID del medicamento: ", String.valueOf(medicamentoId));
 
         // Realizar la consulta de contenido para obtener la información del medicamento
         Cursor cursor = getContentResolver().query(Uri.parse(MedicamentosDatabase.MedicamentosEntry.COLUMN_NOMBRE), null,
                 MedicamentosDatabase.MedicamentosEntry._ID + " = ?", new String[] { String.valueOf(medicamentoId) }, null);
 
         // Mover el cursor al primer registro (el único en este caso) y obtener la información del medicamento
-        String medicamentoNombre = null;
-        if (cursor != null && cursor.moveToFirst()) {
-            medicamentoNombre = cursor.getString(cursor.getColumnIndex(MedicamentosDatabase.MedicamentosEntry.COLUMN_NOMBRE));
-        }
+        String nombreMedicamento = new MedicamentosDatabase(this).obtenerNombreMedicamento(medicamentoId);
+        String cantidadMedicamento = new MedicamentosDatabase(this).obtenerCantidadMedicamento(medicamentoId);
+
 
         // Cerrar el cursor
         if (cursor != null) {
             cursor.close();
         }
 
-        String nombre = medicamentoNombre;
-        String message = getString(R.string.new_notification, nombre);
+        String nombre = nombreMedicamento;
+        String cantidad = cantidadMedicamento;
+        String message = "Hola es momento de tomar: " + nombre + " | Cantidad: " + cantidad + " gr";
 
         int NOTIFY_ID = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
